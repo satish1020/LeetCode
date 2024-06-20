@@ -57,3 +57,44 @@ var findMaxAverage = function (nums, k) {
   return res/k;
 };
 
+// Question
+// Given a binary array nums and an integer k, return the maximum number of consecutive 1's in the array if you can flip at most k 0's.
+// Example 1:
+
+// Input: nums = [1,1,1,0,0,0,1,1,1,1,0], k = 2
+// Output: 6
+// Explanation: [1,1,1,0,0,1,1,1,1,1,1]
+// Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
+// Example 2:
+
+// Input: nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], k = 3
+// Output: 10
+// Explanation: [0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1]
+// Bolded numbers were flipped from 0 to 1. The longest subarray is underlined.
+ 
+
+// Constraints:
+
+// 1 <= nums.length <= 105
+// nums[i] is either 0 or 1.
+// 0 <= k <= nums.length
+var longestOnes = function (nums, k) {
+  let n = nums.length;
+  let left = 0, right = 0, zerosCount = 0, ans = 0;
+
+  // loop through until the constraint is met which is the zeros count greater than k.
+  // once the constraint is met, increase left pointer, and once the left pointer reaches zero, decrease the zeros count.
+  for (right = 0; right < n; right++) {
+    if(nums[right] === 0){
+      zerosCount++;
+    }
+    while(zerosCount > k){
+      if(nums[left] === 0){
+        zerosCount--;
+      }
+      left++;
+    }
+    ans = Math.max(right - left + 1, ans);
+  }
+  return ans;
+}
