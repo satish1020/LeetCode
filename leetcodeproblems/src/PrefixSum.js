@@ -37,7 +37,7 @@ const ansQueries = (nums, queries, limit) => {
   }
 
   for (const [x, y] of queries) {
-    let curr = prefix[y] - prefix[x] + nums[x];
+    let curr = x > 0 ? prefixSum[y] - prefixSum[x - 1] : prefixSum[y];
     ans.push(curr < limit);
   }
   return ans;
