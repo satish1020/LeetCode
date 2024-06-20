@@ -37,7 +37,7 @@ const ansQueries = (nums, queries, limit) => {
   }
 
   for (const [x, y] of queries) {
-    let curr = x > 0 ? prefixSum[y] - prefixSum[x - 1] : prefixSum[y];
+    let curr = prefix[y] - prefix[x] + nums[x];
     ans.push(curr < limit);
   }
   return ans;
@@ -62,3 +62,48 @@ var waysToSplitArray = function (numbers) {
 
     return splitCount;
 };
+
+// alternative without using prefix sum
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var waysToSplitArray = function(nums) {
+    let ans, total, leftSection = 0;
+
+    for(let i=0;i< nums.length;i++){
+        total+=nums[i];
+    }
+
+    for(let i=0;i<nums.length;i++){
+        leftSection = num[i];
+        rightSection = total- nums[i];
+
+        if(leftSection > rightSection)
+        {
+            ans++;
+        }
+    }
+    return ans;
+};
+
+var waysToSplitArray = function(nums) {
+    let n = nums.length;
+    let prefix = new Array(n).fill(0);
+    let ans = 0;
+    
+    for (let i = 1; i < n; i++) {
+        prefix.push(nums[i] + prefix[prefix.length - 1]);
+    }
+    
+    for (let i = 0; i < n - 1; i++) {
+        let leftSection = prefix[i];
+        let rightSection = prefix[n - 1] - prefix[i];
+        if (leftSection >= rightSection) {
+            ans++;
+        }
+    }
+    
+    return ans;
+}
