@@ -24,7 +24,58 @@
 
 // Building a prefix sum is a form of pre-processing. Pre-processing is a useful strategy in a variety of problems where we store pre-computed data in a data structure before running the main logic of our algorithm. While it takes some time to pre-process, it's an investment that will save us a huge amount of time during the main parts of the algorithm.
 // Question:
-// Example 1: Given an integer array nums, an array queries where queries[i] = [x, y] and an integer limit, return a boolean array that represents the answer to each query. A query is true if the sum of the subarray from x to y is less than limit, or false otherwise.
+
+// Given an array nums. We define a running sum of an array as runningSum[i] = sum(nums[0]…nums[i]).
+
+// Return the running sum of nums.
+
+ 
+
+// Example 1:
+
+// Input: nums = [1,2,3,4]
+// Output: [1,3,6,10]
+// Explanation: Running sum is obtained as follows: [1, 1+2, 1+2+3, 1+2+3+4].
+// Example 2:
+
+// Input: nums = [1,1,1,1,1]
+// Output: [1,2,3,4,5]
+// Explanation: Running sum is obtained as follows: [1, 1+1, 1+1+1, 1+1+1+1, 1+1+1+1+1].
+// Example 3:
+
+// Input: nums = [3,1,2,10,1]
+// Output: [3,4,6,16,17]
+ 
+
+// Constraints:
+
+// 1 <= nums.length <= 1000
+// -10^6 <= nums[i] <= 10^6
+// time complexity is O(n), where n is the length of the input array and we need to iterate through the array at least once.
+// space compLexity is O(1), because we modify the original array instead of creating a new one.
+const prefixSum = (nums) => {
+    let n = nums.length;
+    let prefix = [nums[0]];
+     for(var i=1;i< n;i++){
+       prefix[i] = nums[i]+ prefix[prefix.length -1];
+     }
+     return prefix;
+};
+
+// Approach2
+
+const prefixSumApproach2 = (nums)=>{
+    let n = nums.length;
+    //  creates a new array with n elements, all of which are undefined by default, and then sets the first element to the first element of nums.
+     let prefixSum = new Array(n);   
+        prefixSum[0] = nums[0];
+     for(let i=1;i<n;i++){  
+      prefixSum[i] = nums[i]+ prefixSum[i-1];
+     }
+     return prefixSum;
+}
+
+// Example 2: Given an integer array nums, an array queries where queries[i] = [x, y] and an integer limit, return a boolean array that represents the answer to each query. A query is true if the sum of the subarray from x to y is less than limit, or false otherwise.
 // For example, given nums = [1, 6, 3, 2, 7, 2], queries = [[0, 3], [2, 5], [2, 4]], and limit = 13, the answer is [true, false, true]. For each query, the subarray sums are [12, 14, 12].
 const ansQueries = (nums, queries, limit) => {
   const n = nums.length;
@@ -43,7 +94,7 @@ const ansQueries = (nums, queries, limit) => {
   return ans;
 };
 
-// Given an integer array nums, find the number of ways to split the array into two parts so that the first section has a sum greater than or equal to the sum of the second section. The second section should have at least one number.
+// Example3 Given an integer array nums, find the number of ways to split the array into two parts so that the first section has a sum greater than or equal to the sum of the second section. The second section should have at least one number.
 var waysToSplitArray = function (numbers) {
   let arraySize = numbers.length;
   let prefixSum = new Array(arraySize).fill(0);
@@ -51,15 +102,12 @@ var waysToSplitArray = function (numbers) {
   for (let i = arraySize - 1; i >= 0; i--) {
     prefixSum[i] = (prefixSum[i + 1] || 0) + numbers[i];
   }
-
   let currentSum = 0;
   let splitCount = 0;
-
   for (let i = 0; i < arraySize - 1; i++) {
     currentSum += numbers[i];
     if (currentSum >= prefixSum[i + 1]) splitCount++;
   }
-
   return splitCount;
 };
 
@@ -67,11 +115,9 @@ var waysToSplitArray = function (nums) {
   let n = nums.length;
   let prefix = new Array(n).fill(0);
   let ans = 0;
-
   for (let i = 1; i < n; i++) {
     prefix.push(nums[i] + prefix[prefix.length - 1]);
   }
-
   for (let i = 0; i < n - 1; i++) {
     let leftSection = prefix[i];
     let rightSection = prefix[n - 1] - prefix[i];
@@ -79,41 +125,5 @@ var waysToSplitArray = function (nums) {
       ans++;
     }
   }
-
   return ans;
 };
-
-// alternative without using prefix sum
-// Do we need the array?
-// In this problem, the order in which we need to access prefix is incremental: to find leftSection, we do prefix[i] as i increments by 1 each iteration.
-// As such, to calculate leftSection we don't actually need the array. We can just initialize leftSection = 0 and then calculate it on the fly by adding the current element to it at each iteration.
-// What about rightSection? By definition, the right section contains all the numbers in the array that aren't in the left section. Therefore, we can pre-compute the sum of the entire input as total, then calculate rightSection as total - leftSection.
-// We are still using the concept of a prefix sum as each value of leftSection represents the sum of a prefix. We have simply replicated the functionality using an integer instead of an array.
-/**
- * @param {number[]} nums
- * @return {number}
- */
-var waysToSplitArray = function (nums) {
-  let ans,
-    total,
-    leftSection = 0;
-
-  for (let i = 0; i < nums.length; i++) {
-    total += nums[i];
-  }
-
-  for (let i = 0; i < nums.length; i++) {
-    leftSection = num[i];
-    rightSection = total - nums[i];
-
-    if (leftSection > rightSection) {
-      ans++;
-    }
-  }
-  return ans;
-};
-
-// We have improved the space complexity to O(1), which is a great improvement.
-// Closing notes
-// This is the last major pattern we will be looking at for arrays and strings. In the next article, we'll look at a few more common tricks and patterns, then close the chapter with a quiz before moving on. Before that, try applying the concepts learned here in the next problem.
-

@@ -127,53 +127,6 @@ Heap
 - Top K Frequent Elements - https://leetcode.com/problems/top-k-frequent-elements/
 - Find Median from Data Stream - https://leetcode.com/problems/find-median-from-data-stream/
 
-
-
-
-<!-- Prefix Sum -->
-Prefix sum is a technique that can be used on arrays (of numbers). The idea is to create an array prefix where prefix[i] is the sum of all elements up to the index i (inclusive). For example, given nums = [5, 2, 1, 6, 3, 8], we would have prefix = [5, 7, 8, 14, 17, 25].
-
-When a subarray starts at index 0, it is considered a "prefix" of the array. A prefix sum represents the sum of all prefixes.
-
-Prefix sums allow us to find the sum of any subarray in 
-𝑂
-(
-1
-)
-O(1). If we want the sum of the subarray from i to j (inclusive), then the answer is prefix[j] - prefix[i - 1], or prefix[j] - prefix[i] + nums[i] if you don't want to deal with the out of bounds case when i = 0.
-
-This works because prefix[i - 1] is the sum of all elements before index i. When you subtract this from the sum of all elements up to index j, you are left with the sum of all elements starting at index i and ending at index j, which is exactly what we are looking for.
-
-
-3,6,2,,8,1,4,1,5
-
-prefix sum of above array:
-3,9,11,19,20,24,25,30
-
-In the above image, we want to find the sum of the subarray from index 3 to 6..
-
-If you take all the elements up until the end of the subarray (of index 6) and subtract all the elements before index 3 (which is index 2), you have the subarray.
-
-With a prefix sum, we can find the sum of index 6 i.e 25 and upto index 2 i.e 11 in constant time and take their difference to find the sum of the subarray as 14.
-
-Building a prefix sum is very simple. Here's some pseudocode:
-
-Given an array nums,
-
-// note in the below pseudo code prefix.length is 1 and it keeps increasing as we keep appending.
-Pseudo code:
-prefix = [nums[0]] 
-for (int i = 1; i < nums.length; i++)
-    prefix.append(nums[i] + prefix[prefix.length - 1])
-
-Initially, we start with just the first element. Then we iterate with i starting from index 1. At any given point, the last element of prefix will represent the sum of all the elements in the input up to but not including index i. So we can add that value plus the current value to the end of prefix and continue to the next element.
-
-A prefix sum is a great tool whenever a problem involves sums of a subarray. It only costs 
-O(n) to build but allows all future subarray queries to be 𝑂(1), so it can usually improve an algorithm's time complexity by a factor of O(n), where 
-n is the length of the array. Let's look at some examples.
-
-Building a prefix sum is a form of pre-processing. Pre-processing is a useful strategy in a variety of problems where we store pre-computed data in a data structure before running the main logic of our algorithm. While it takes some time to pre-process, it's an investment that will save us a huge amount of time during the main parts of the algorithm.
-
 <!-- Git hub creating personal and work configs
 
  https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
@@ -206,3 +159,33 @@ Host github.com
   AddKeysToAgent yes
   UseKeychain yes
   IdentityFile ~/.ssh/id_ed25519_personal -->
+
+<!-- git commands -->
+<!-- 1. 𝐠𝐢𝐭 𝐝𝐢𝐟𝐟: Show file differences not yet staged.
+2. 𝐠𝐢𝐭 𝐜𝐨𝐦𝐦𝐢𝐭 -𝐚 -𝐦 "𝐜𝐨𝐦𝐦𝐢𝐭 𝐦𝐞𝐬𝐬𝐚𝐠𝐞": Commit all tracked changes with a message.
+3. 𝐠𝐢𝐭 𝐜𝐨𝐦𝐦𝐢𝐭 --𝐚𝐦𝐞𝐧𝐝: Modify the last commit.
+4. 𝐠𝐢𝐭 𝐬𝐭𝐚𝐭𝐮𝐬: Show the state of your working directory.
+5. 𝐠𝐢𝐭 𝐚𝐝𝐝 𝐟𝐢𝐥𝐞_𝐩𝐚𝐭𝐡: Add file(s) to the staging area.
+6. 𝐠𝐢𝐭 𝐜𝐡𝐞𝐜𝐤𝐨𝐮𝐭 -𝐛 𝐛𝐫𝐚𝐧𝐜𝐡_𝐧𝐚𝐦𝐞: Create and switch to a new branch.
+7. 𝐠𝐢𝐭 𝐜𝐡𝐞𝐜𝐤𝐨𝐮𝐭 𝐛𝐫𝐚𝐧𝐜𝐡_𝐧𝐚𝐦𝐞: Switch to an existing branch.
+8. 𝐠𝐢𝐭 𝐜𝐡𝐞𝐜𝐤𝐨𝐮𝐭 <𝐜𝐨𝐦𝐦𝐢𝐭>: Switches the working directory to a specific commit.
+9. 𝐠𝐢𝐭 𝐩𝐮𝐬𝐡 𝐨𝐫𝐢𝐠𝐢𝐧 𝐛𝐫𝐚𝐧𝐜𝐡_𝐧𝐚𝐦𝐞: Push a branch to a remote.
+10. 𝐠𝐢𝐭 𝐩𝐮𝐥𝐥: Fetch and merge remote changes.
+11. 𝐠𝐢𝐭 𝐟𝐞𝐭𝐜𝐡: Fetch changes from the remote repository without merging.
+12. 𝐠𝐢𝐭 𝐫𝐞𝐛𝐚𝐬𝐞 -𝐢: Rebase interactively, rewrite commit history.
+13. 𝐠𝐢𝐭 𝐫𝐞𝐛𝐚𝐬𝐞 𝐛𝐫𝐚𝐧𝐜𝐡_𝐧𝐚𝐦𝐞: Rebase the current branch onto another branch.
+14. 𝐠𝐢𝐭 𝐜𝐥𝐨𝐧𝐞: Create a local copy of a remote repo.
+15. 𝐠𝐢𝐭 𝐦𝐞𝐫𝐠𝐞: Merge branches together.
+16. 𝐠𝐢𝐭 𝐥𝐨𝐠 --𝐬𝐭𝐚𝐭: Show commit logs with stats.
+17. 𝐠𝐢𝐭 𝐬𝐭𝐚𝐬𝐡: Stash changes for later.
+18. 𝐠𝐢𝐭 𝐬𝐭𝐚𝐬𝐡 𝐩𝐨𝐩: Apply and remove stashed changes.
+19. 𝐠𝐢𝐭 𝐬𝐡𝐨𝐰 𝐜𝐨𝐦𝐦𝐢𝐭_𝐢𝐝: Show details about a commit.
+20. 𝐠𝐢𝐭 𝐫𝐞𝐬𝐞𝐭 𝐇𝐄𝐀𝐃~1: Undo the last commit, preserving changes locally.
+21. 𝐠𝐢𝐭 𝐛𝐫𝐚𝐧𝐜𝐡 -𝐃 𝐛𝐫𝐚𝐧𝐜𝐡_𝐧𝐚𝐦𝐞: Delete a branch forcefully.
+22. 𝐠𝐢𝐭 𝐫𝐞𝐬𝐞𝐭: Undo commits by moving branch reference.
+23.  𝐠𝐢𝐭 𝐫𝐞𝐯𝐞𝐫𝐭 𝐜𝐨𝐦𝐦𝐢𝐭_𝐢𝐝: Create a new commit that undoes the changes of a specific commit.
+24. 𝐠𝐢𝐭 𝐜𝐡𝐞𝐫𝐫𝐲-𝐩𝐢𝐜𝐤 𝐜𝐨𝐦𝐦𝐢𝐭_𝐢𝐝: Apply changes from a specific commit.
+24. 𝐠𝐢𝐭 𝐛𝐫𝐚𝐧𝐜𝐡: Lists branches.
+26. 𝐠𝐢𝐭 𝐫𝐞𝐬𝐞𝐭 --𝐬𝐨𝐟𝐭 𝐇𝐄𝐀𝐃^: Undo the last commit, but keep the changes.
+27. 𝐠𝐢𝐭 𝐫𝐞𝐬𝐞𝐭 --𝐡𝐚𝐫𝐝: Resets everything to a previous commit, erasing all uncommitted changes.
+28: 𝐠𝐢𝐭 𝐛𝐫𝐚𝐧𝐜𝐡 --𝐬𝐞𝐭-𝐮𝐩𝐬𝐭𝐫𝐞𝐚𝐦-𝐭𝐨 𝐫𝐞𝐦𝐨𝐭𝐞_𝐛𝐫𝐚𝐧𝐜𝐡: Sets the upstream branch to the specified remote branch. -->
