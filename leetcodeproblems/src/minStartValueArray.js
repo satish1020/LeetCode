@@ -69,7 +69,9 @@ var minStartValue = function (nums) {
   // Start with startValue = 1.
   var startValue = 1;
 
-  // While we haven't found the first valid startValue
+  // While we haven't found the first valid startValue.
+  // while (true) should be used when we don't know the exact number of iterations.
+  // But since we know the constraints we can give    for(var i = -100; i< 100 ;i++)  instead of while(true)
   while (true) {
     // The step-by-step total equals startValue at the beginning.
     // Use boolean parameter "isValid" to record whether the total
