@@ -53,18 +53,29 @@
 // -10^6 <= nums[i] <= 10^6
 // time complexity is O(n), where n is the length of the input array and we need to iterate through the array at least once.
 // space compLexity is O(1), because we modify the original array instead of creating a new one.
-const prefixSum = (nums) => {
-    let n = nums.length;
-    let prefix = [nums[0]];
-     for(var i=1;i< n;i++){
-       prefix[i] = nums[i]+ prefix[prefix.length -1];
-     }
-     return prefix;
-};
 
-// Approach2
 
-const prefixSumApproach2 = (nums)=>{
+const prefixSum = (nums) =>{
+ let n = nums.length;
+ let prefix = [0].concat(nums);
+
+ for(var i =1;i<n;i++){
+  prefix[i] = prefix[i-1]+ nums[i-1];
+ }
+}
+
+// to find sum of k elements starting from index k;
+const sumofKElements = (prefix, k) =>{
+ let left =k;
+ let right = prefix.length-k;
+ let ans = 0;
+  for(var i= left;i< right;i++){
+   ans = prefix[rightBound + 1] - prefix[leftBound];
+  }
+  return ans;
+}
+
+const prefixSumApproach1= (nums)=>{
     let n = nums.length;
     //  creates a new array with n elements, all of which are undefined by default, and then sets the first element to the first element of nums.
      let prefixSum = new Array(n);   
@@ -75,6 +86,25 @@ const prefixSumApproach2 = (nums)=>{
      return prefixSum;
 }
 
+// Approach2
+const prefixSumApproach2 = (nums) => {
+  let n = nums.length;
+  let prefix = [nums[0]];
+   for(var i=1;i< n;i++){
+     prefix[i] = nums[i]+ prefix[prefix.length -1];
+   }
+   return prefix;
+};
+
+// Approach 3
+   // 'prefix[i + 1]' will be sum of all elements of 'nums' from index '0' to 'i'.
+const prefixSumApproach3 = (nums) =>{
+  let n = nums.length;
+  const prefix = new Array(n + 1).fill(0);
+    for (let i = 0; i < n; ++i) {
+        prefix[i + 1] = prefix[i] + nums[i];
+    }
+}
 // Example 2: Given an integer array nums, an array queries where queries[i] = [x, y] and an integer limit, return a boolean array that represents the answer to each query. A query is true if the sum of the subarray from x to y is less than limit, or false otherwise.
 // For example, given nums = [1, 6, 3, 2, 7, 2], queries = [[0, 3], [2, 5], [2, 4]], and limit = 13, the answer is [true, false, true]. For each query, the subarray sums are [12, 14, 12].
 const ansQueries = (nums, queries, limit) => {
