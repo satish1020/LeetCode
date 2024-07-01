@@ -81,7 +81,77 @@ prefix = [0, 2, 3, 6, 10, 15, 23, 24];
 // We iterate on the nums array and generate its prefix array, where prefix[i + 1] is prefix[i] + nums[i].
 // We iterate on those indices which will have at least k elements on their left and right sides, calculate the sum of the required sub-array using prefix array prefix[rightBound + 1] - prefix[leftBound], and store the average by dividing the sum by windowSize in averages array.
 // In the end we return averages array.
-var getAverages = function (nums, k) {
+
+var getAveragesByPrefixSum = function (nums, k) {
+  if (k === 0) {
+    return nums;
+  }
+
+  const windowSize = 2 * k + 1;
+  const n = nums.length;
+  const averages = new Array(n).fill(-1);
+
+  if (windowSize > n) {
+    return averages;
+  }
+
+  let prefix = new Array(n);
+  prefix[0] = nums[0];
+  for (let i = 1; i < n; ++i) {
+    prefix[i] = nums[i] + prefix[i - 1];
+  }
+
+  for (let i = k; i < n - k; ++i) {
+    const leftBound = i - k,
+      rightBound = i + k;
+    let subArraySum;
+    if (leftBound === 0) {
+      subArraySum = prefix[rightBound];
+    } else {
+      subArraySum = prefix[rightBound] - prefix[leftBound - 1];
+    }
+    const average = Math.floor(subArraySum / windowSize);
+    averages[i] = average;
+  }
+
+  return averages;
+};
+
+var getAveragesByPrefixSumApproach1 = function (nums, k) {
+  if (k === 0) {
+    return nums;
+  }
+
+  const windowSize = 2 * k + 1;
+  const n = nums.length;
+  const averages = new Array(n).fill(-1);
+
+  if (windowSize > n) {
+    return averages;
+  }
+
+  let prefix = [nums[0]];
+  for (let i = 1; i < n; ++i) {
+    prefix[i] = nums[i] + prefix[i - 1];
+  }
+
+  for (let i = k; i < n - k; ++i) {
+    const leftBound = i - k,
+      rightBound = i + k;
+    let subArraySum;
+    if (leftBound === 0) {
+      subArraySum = prefix[rightBound];
+    } else {
+      subArraySum = prefix[rightBound] - prefix[leftBound - 1];
+    }
+    const average = Math.floor(subArraySum / windowSize);
+    averages[i] = average;
+  }
+
+  return averages;
+};
+
+var getAveragesByPrefixSumAlternative = function (nums, k) {
   // When a single element is considered then its average will be the number itself only.
   if (k === 0) {
     return nums;
@@ -99,6 +169,9 @@ var getAverages = function (nums, k) {
   // Generate 'prefix' array for 'nums'.
   // 'prefix[i + 1]' will be sum of all elements of 'nums' from index '0' to 'i'.
   // let prefix = [nums[0]];
+  // prefix sum to start with 0;
+  // technique when to do prefix[rightBound] - prefix[leftBound - 1] to find the sum of subarray from leftBound to rightBound.
+  // By adding a 0 at the beginning of the prefix sum array, we can always subtract prefix[leftBound - 1], even when leftBound is 0. This simplifies the code and avoids the need for a conditional statement.
   let prefix = [0].concat(nums);
   for (let i = 1; i <= n; ++i) {
     prefix[i] = nums[i - 1] + prefix[i - 1];
@@ -125,3 +198,83 @@ var getAverages = function (nums, k) {
 // Space complexity: O(n)
 // The output array averages is not considered as additional space usage.
 // But, we have used another additional array prefix of size n + 1, thus, we use O(n) additional space in this approach.
+
+// Input: nums = [7,4,3,9,1,8,5,2,6], k = 3
+// Output: [-1,-1,-1,5,4,4,-1,-1,-1]
+// window size = 2 * 3 + 1 = 7
+// window sum = 7 + 4 + 3 + 9 + 1 + 8 + 5 = 37
+// average = 37 / 7 = 5
+// next window sum starting from index 7 to length 9 is 37 - nums[7 - 7] + nums[7] = 37 - 7 + 2 = 32
+// average = 32 / 7 = 4
+
+// Approach 2
+// Intuition
+// We know that we always have to keep a window of size 2 * k + 1 (centered around index x) to find its k-radius average.
+// Let's assume we already know the sum of the 2 * k + 1 elements centered at index x, let this sum be S x
+// When we move to the next index x + 1 we shift our window to the right by one element, thus from the sum of elements of the previous window range (Sx).
+// we subtract the left-most element of the previous window and add the next element on the right to get the new window sum in constant time.
+// Sx+1 = Sx +(next element on the right)−(left most window element)
+// Thus we can eliminate the use of the prefix array to generate the sum of all elements of all windows of size 2 * k + 1.
+// [2,1,3,4,5,8,1] When we move to index 3, we discard element at index 0 and add element at index 5 in old window.
+// we know the sum of index at 2 is 15.The sum of elements of new window at index 2 is 15.
+// The sum of elements of new window: old window sum - discarded element that is nums[0]i.e 2 + inserted element which is nums[5]i.e 8 = 15 - 2 + 1 = 14
+// Note: If you aren't familiar with the sliding window concept we recommend you first solve this problem 1456. Maximum Number of Vowels in a Substring of Given Length.
+
+// Algorithm
+// Initialize variables:
+// n, to store the number of elements in the nums array.
+// averages, an array of size n initially initialized with -1 to store the k-radius average of each index of the nums array.
+// windowSum, to store the sum of the current window.
+// If k is 0, which means we have to find the average of only one number at each index, so we return the nums array, or if windowSize, 2 * k + 1, is greater than n, which means we have to find the average of more than n numbers which is not possible, thus we return the averages array.
+// We iterate on the first windowSize elements to get the sum of the first window, calculate the first windowSum, and store the average in the averages array.
+// Now we will shift the window by one element at each iteration to find the averages of all remaining windows.
+// For each window, variable i will point to the rightmost, i - windowSize + 1 will point to the leftmost, and i - k will point to the center element.
+// We calculate the sum of the current window using the previous window's sum as discussed, windowSum - nums[i - windowSize] + num[i], and store the average in the averages array.
+// In the end we return the averages array.
+
+// Complexity Analysis
+// Here, n is the number of elements in the nums array.
+
+// Time complexity: O(n)
+
+// Initializing the averages array with -1 will take O(n) time.
+// Then we iterate over the nums array linearly to find the k-radius average of each index, which will also take O(n) time.
+// Thus, overall we use O(n) time.
+// Space complexity: O(1)
+
+// The output array averages is not considered as additional space usage.
+
+var getAverages = function (nums, k) {
+  // When a single element is considered then its average will be the number itself only.
+  if (k === 0) {
+    return nums;
+  }
+
+  const windowSize = 2 * k + 1;
+  const n = nums.length;
+  const averages = new Array(n).fill(-1);
+
+  // Any index will not have 'k' elements in its left and right.
+  if (windowSize > n) {
+    return averages;
+  }
+
+  // First get the sum of first window of the 'nums' array.
+  let windowSum = 0;
+  for (let i = 0; i < windowSize; ++i) {
+    windowSum += nums[i];
+  }
+  averages[k] = Math.floor(windowSum / windowSize);
+
+  // Iterate on rest indices which have at least 'k' elements
+  // on its left and right sides.
+  for (let i = windowSize; i < n; ++i) {
+    // We remove the discarded element and add the new element to get current window sum.
+    // 'i' is the index of new inserted element, and
+    // 'i - (window size)' is the index of the last removed element.
+    windowSum = windowSum - nums[i - windowSize] + nums[i];
+    averages[i - k] = Math.floor(windowSum / windowSize);
+  }
+
+  return averages;
+};
