@@ -278,3 +278,5 @@ var getAverages = function (nums, k) {
 
   return averages;
 };
+
+
