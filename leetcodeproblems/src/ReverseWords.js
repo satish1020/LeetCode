@@ -39,8 +39,6 @@ const reverseWords = function (s) {
 
 // Translated JavaScript solution
 
-
-
 // The trimSpaces function in the provided JavaScript code is designed to remove extra spaces from a string, including leading, trailing, and multiple consecutive spaces within the string, except it keeps a single space between words. Here's a step-by-step explanation:
 
 // Initialize an empty array output: This array will be used to store characters from the input string s after removing unnecessary spaces.
@@ -63,11 +61,10 @@ const reverseWords = function (s) {
 // Finally, the function returns the output array, which now contains the original string's characters with extra spaces removed.
 // This function effectively trims leading and trailing spaces and reduces any internal sequences of multiple spaces to a single space, but it returns an array of characters instead of a string.
 
-
-/ Step1 trim spaces at the beginning and the end and reduce multiple spaces to single one.
+// Step1 trim spaces at the beginning and the end and reduce multiple spaces to single one.
 // Step2 reverse the whole string.
 // Step3 reverse each word.
-const reverseWordsWithoutUsinginbuiltFunction = function (s) {
+const reverseWordsWithoutUsingInbuiltFunction = function (s) {
   let arr = trimSpaces(s);
 
   // reverse the whole string
@@ -106,11 +103,32 @@ var reverseEachWord = function (arr) {
   let left = 0;
   let n = arr.length;
 
+  //right <= n is the catch
   for (let right = 0; right <= n; right++) {
     if (right === n || arr[right] === " ") {
+      // right-1 is the catch.
       reverse(arr, left, right - 1);
       left = right + 1;
     }
+  }
+};
+
+var reverseEachWordWithoutCallingReverse = function (arr) {
+  let left = 0;
+  let n = arr.length;
+
+  //catch is right <= n
+  for (let right = 0; right <= n; right++) {
+      if (right === n || arr[right] === ' ') {
+          // catch is left < right -1
+          while (left < right -1) {
+              [arr[left], arr[right -1]] = [arr[right -1], arr[left]];
+              left++;
+              right--;
+          }
+          // catch is this increment happens inside if block;
+          left = right + 1;
+      }
   }
 };
 
