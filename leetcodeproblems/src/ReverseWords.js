@@ -39,22 +39,7 @@ const reverseWords = function (s) {
 
 // Translated JavaScript solution
 
-// Step1 trim spaces at the beginning and the end and reduce multiple spaces to single one.
-// Step2 reverse the whole string.
-// Step3 reverse each word.
-const reverseWordsApproach2 = function (s) {
-  // convert string to char array
-  // and trim spaces at the same time
-  let arr = trimSpaces(s);
 
-  // reverse the whole string
-  reverse(arr, 0, arr.length - 1);
-
-  // reverse each word
-  reverseEachWord(arr);
-
-  return arr.join("");
-};
 
 // The trimSpaces function in the provided JavaScript code is designed to remove extra spaces from a string, including leading, trailing, and multiple consecutive spaces within the string, except it keeps a single space between words. Here's a step-by-step explanation:
 
@@ -78,6 +63,10 @@ const reverseWordsApproach2 = function (s) {
 // Finally, the function returns the output array, which now contains the original string's characters with extra spaces removed.
 // This function effectively trims leading and trailing spaces and reduces any internal sequences of multiple spaces to a single space, but it returns an array of characters instead of a string.
 
+
+/ Step1 trim spaces at the beginning and the end and reduce multiple spaces to single one.
+// Step2 reverse the whole string.
+// Step3 reverse each word.
 const reverseWordsWithoutUsinginbuiltFunction = function (s) {
   let arr = trimSpaces(s);
 
