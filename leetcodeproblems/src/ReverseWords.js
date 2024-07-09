@@ -19,17 +19,17 @@
 // Time complexity: O(N), where N is the number of characters in the input string.
 // Space complexity: O(N), to store the result of split by spaces.
 
-// const reverseWords = function (s) {
-//   s = s.trim();
-//   // let words = s.split(/\s+/).reverse();
-//   // This code splits str at every space character and then uses filter to remove any empty strings ('') that result from consecutive spaces in the original string
-//   let words = s
-//     .split(" ")
-//     .filter((word) => word.length > 0)
-//     .reverse();
+const reverseWords = function (s) {
+  s = s.trim();
+  // let words = s.split(/\s+/).reverse();
+  // This code splits str at every space character and then uses filter to remove any empty strings ('') that result from consecutive spaces in the original string
+  let words = s
+    .split(" ")
+    .filter((word) => word.length > 0)
+    .reverse();
 
-//   return words.join(" ");
-// };
+  return words.join(" ");
+};
 
 // Approach 2: Reverse the Whole String and Then Reverse Each Word
 // The implementation of this approach will be different for Java/Python (= immutable strings) and C++ (= mutable strings).
