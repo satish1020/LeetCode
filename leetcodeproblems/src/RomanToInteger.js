@@ -17,6 +17,40 @@
 // C can be placed before D (500) and M (1000) to make 400 and 900.
 // Given a roman numeral, convert it to an integer.
 
+// Approach 2: Using HashMap
+
+// space complexity is O(1) because the input is always valid, and the size of the hash map is fixed.
+// time complexity is  o(n) because we loop through the input string once.
+// since we have a constraint on the input string length, we can say that the time complexity is O(1).
+const romanToIntUsingHashMap = (s) => {
+  const romanMap = new Map([
+    ["I", 1],
+    ["V", 5],
+    ["X", 10],
+    ["L", 50],
+    ["C", 100],
+    ["D", 500],
+    ["M", 1000],
+  ]);
+
+  // const roadMap = {I}
+
+  let intValue = 0;
+  for (let i = 0; i < s.length; i++) {
+    const current = romanMap.get(s[i]);
+    const next = romanMap.get(s[i + 1]);
+
+    if (next > current) {
+      intValue -= current;
+    } else {
+      intValue += current;
+    }
+  }
+
+  return intValue;
+};
+
+// Alternative approach
 // Example 1:
 
 // Input: s = "III"
@@ -103,14 +137,13 @@
 // i = 0
 // while i < s.length:
 //     if at least 2 symbols remaining AND value of s[i] < value of s[i + 1]:
-//         total = total + (value of s[i + 1]) - (value of s[i])  
+//         total = total + (value of s[i + 1]) - (value of s[i])
 //         i = i + 2
 //     else:
 //         total = total + (value of s[i])
 //         i = i + 1
 // return total
 // Recall that the input is always valid. This means that we don't need to worry about being given inputs such as ICD.
-
 
 var romanToInt = function (s) {
   let values = {
@@ -154,30 +187,96 @@ var romanToInt = function (s) {
 
 // Because only a constant number of single-value variables are used, the space complexity is O(1).
 
+// Approach 2: Left-to-Right Pass Improved
+// Intuition
 
-// Approach 2: Using HashMap
-const romanToIntUsingHashMap = (s) => {
-    const romanMap = new Map([
-        ['I', 1],
-        ['V', 5],
-        ['X', 10],
-        ['L', 50],
-        ['C', 100],
-        ['D', 500],
-        ['M', 1000]
-    ]);
+// Instead of viewing a Roman Numeral as having 7 unique symbols, we could instead view it as having 13 unique symbols—some of length-1 and some of length-2.
 
-    let intValue = 0;
-    for (let i = 0; i < s.length; i++) {
-        const current = romanMap.get(s[i]);
-        const next = romanMap.get(s[i + 1]);
+// Symbol mapping
 
-        if (next > current) {
-            intValue -= current;
-        } else {
-            intValue += current;
-        }
+// For example, here is the Roman Numeral MMCMLXXXIX broken into its symbols using this definition:
+
+// Splitting the numeral into parts
+
+// We can then look up the value of each symbol and add them together.
+
+// Adding up the sum of the numeral
+
+// After making a Map of String -> Integer with the 13 "symbols", we need to work our way down the string in the same way as before (we'll do left-to-right, however right-to-left will work okay too), firstly checking if we're at a length-2 symbol, and if not, then treating it as a length-1 symbol.
+
+// Algorithm
+// total = 0
+// i = 0
+// while i < s.length:
+//     if at least 2 characters remaining and s.substing(i, i + 1) is in values:
+//         total = total + (value of s.substring(i, i + 1))
+//         i = i + 2
+//     else:
+//         total = total + (value of s[i])
+//         i = i + 1
+// return total
+
+var romanToIntApproach2 = function (s) {
+  let values = {
+    I: 1,
+    V: 5,
+    X: 10,
+    L: 50,
+    C: 100,
+    D: 500,
+    M: 1000,
+    IV: 4,
+    IX: 9,
+    XL: 40,
+    XC: 90,
+    CD: 400,
+    CM: 900,
+  };
+
+  let total = 0;
+  let i = 0;
+  while (i < s.length) {
+    if (i < s.length - 1 && s.substring(i, i + 2) in values) {
+      total += values[s.substring(i, i + 2)];
+      i += 2;
+    } else {
+      total += values[s.charAt(i)];
+      i++;
     }
+  } 
+  return total;
+};
 
-    return intValue;
-}
+// Approach 3: Right-to-Left Pass
+// Intuition
+
+// This approach is a more elegant variant of Approach 1. Just to be clear though, Approach 1 and Approach 2 are probably sufficient for an interview. This approach is still well worth understanding though.
+
+// In the "subtraction" cases, such as XC, we've been updating our running sum as follows:
+
+// sum += value(C) - value(X)
+// However, notice that this is mathematically equivalent to the following:
+
+// sum += value(C)
+// sum -= value(X)
+// Utilizing this means that we can process one symbol each time we go around the main loop. We still need to determine whether or not our current symbol should be added or subtracted by looking at the neighbour though.
+
+// In Approach 1, we had to be careful when inspecting the next symbol to not go over the end of the string. This check wasn't difficult to do, but it increased the code complexity a bit, and it turns out we can avoid it with this approach!
+
+// Observe the following:
+
+// Without looking at the next symbol, we don't know whether or not the left-most symbol should be added or subtracted.
+// The right-most symbol is always added. It is either by itself, or the additive part of a pair.
+// So, what we can do is initialise sum to be the value of the right-most (last) symbol. Then, we work backwards through the string, starting from the second-to-last-symbol. We check the symbol after (i + 1) to determine whether the current symbol should be "added" or "subtracted".
+
+// Algorithm    
+// last = s.length - 1
+// total = value(last)
+// `
+// for i from last - 1 down to 0:
+//     if value(s[i]) < value(s[i+1]):
+//         total -= value(s[i])
+//     else:
+//         total += value(s[i])
+// return sum
+// Because we're starting at the second-to-last-index, we know that index i + 1 always exists. We no longer need to handle its potential non-existence as a special case, and additionally we're able to (cleanly) use a for loop, as we're always moving along by 1 index at at time, unlike before where it could have been 1 or 2.
