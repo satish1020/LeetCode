@@ -57,8 +57,10 @@ const reverseWords = function (s) {
   words.push(word);
   console.log("***Words", words);
   let reverseString = "";
+  // this is the trick we loop back the words array. So that we don't need to reverse again.
   for (var i = words.length - 1; i >= 0; i--) {
       reverseString += words[i];
+      // this is the catch, 
       if (i > 0) {
           reverseString += " ";
       }
