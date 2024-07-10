@@ -19,7 +19,7 @@
 // Time complexity: O(N), where N is the number of characters in the input string.
 // Space complexity: O(N), to store the result of split by spaces.
 
-const reverseWords = function (s) {
+const reverseWordsSimple = function (s) {
   s = s.trim();
   // let words = s.split(/\s+/).reverse();
   // This code splits str at every space character and then uses filter to remove any empty strings ('') that result from consecutive spaces in the original string
@@ -31,53 +31,41 @@ const reverseWords = function (s) {
   return words.join(" ");
 };
 
-const reverseWordBestApproach = () => {
+const reverseWords = function (s) {
   let left = 0;
   let right = s.length - 1;
   // indices move left and right so that they are no traling spaces
-  while (left < right) {
-    if (s[left] === " ") {
-      left++;
-    } else if (s[left]) {
-      break;
-    }
-  }
-
-  while (left < right) {
-    if (s[right] === " ") {
-      right--;
-    } else if (s[right]) {
-      break;
-    }
-  }
+  while (left <= right && s[left] === ' ') left++;
+  while (left <= right && s[right] === ' ') right--;
 
   // now break the string to array of words using the above new pointers
   let words = [];
   let word = "";
 
   while (left <= right) {
-    if (s[left] !== " ") {
-      word += s[left];
-    }
-    // check word.length greater than 0 to trim double spaces
-    if (word.length > 0 && s[left] === " ") {
-      words.push(word);
-      word = "";
-    }
-    left++;
+      if (s[left] !== " ") {
+          word += s[left];
+      }
+      // check word.length greater than 0 to trim double spaces
+      if (word.length > 0 && s[left] === " ") {
+          words.push(word);
+          word = "";
+      }
+      left++;
   }
   // catch push after while loop so that the last world be pushed.
   words.push(word);
   console.log("***Words", words);
   let reverseString = "";
   for (var i = words.length - 1; i >= 0; i--) {
-    reverseString += words[i];
-    if (i > 0) {
-      reverseString += " ";
-    }
+      reverseString += words[i];
+      if (i > 0) {
+          reverseString += " ";
+      }
   }
   return reverseString;
-};
+}
+
 
 // Approach 2: Reverse the Whole String and Then Reverse Each Word
 // The implementation of this approach will be different for Java/Python (= immutable strings) and C++ (= mutable strings).
