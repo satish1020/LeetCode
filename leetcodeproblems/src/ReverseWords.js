@@ -31,6 +31,54 @@ const reverseWords = function (s) {
   return words.join(" ");
 };
 
+const reverseWordBestApproach = () => {
+  let left = 0;
+  let right = s.length - 1;
+  // indices move left and right so that they are no traling spaces
+  while (left < right) {
+    if (s[left] === " ") {
+      left++;
+    } else if (s[left]) {
+      break;
+    }
+  }
+
+  while (left < right) {
+    if (s[right] === " ") {
+      right--;
+    } else if (s[right]) {
+      break;
+    }
+  }
+
+  // now break the string to array of words using the above new pointers
+  let words = [];
+  let word = "";
+
+  while (left <= right) {
+    if (s[left] !== " ") {
+      word += s[left];
+    }
+    // check word.length greater than 0 to trim double spaces
+    if (word.length > 0 && s[left] === " ") {
+      words.push(word);
+      word = "";
+    }
+    left++;
+  }
+  // catch push after while loop so that the last world be pushed.
+  words.push(word);
+  console.log("***Words", words);
+  let reverseString = "";
+  for (var i = words.length - 1; i >= 0; i--) {
+    reverseString += words[i];
+    if (i > 0) {
+      reverseString += " ";
+    }
+  }
+  return reverseString;
+};
+
 // Approach 2: Reverse the Whole String and Then Reverse Each Word
 // The implementation of this approach will be different for Java/Python (= immutable strings) and C++ (= mutable strings).
 
@@ -76,6 +124,33 @@ const reverseWordsWithoutUsingInbuiltFunction = function (s) {
   return arr.join("");
 };
 
+const reverseWordsTwo = function (s) {
+  let words = [];
+  let word = "";
+  for (let i = 0; i <= s.length; i++) {
+    if (s[i] === " " || i === s.length) {
+      if (word) {
+        words.push(word);
+        word = "";
+      }
+    } else {
+      word += s[i];
+    }
+  }
+
+  console.log("**", s, words, words.join());
+
+  let result = "";
+  for (let i = words.length - 1; i >= 0; i--) {
+    result += words[i];
+    if (i > 0) {
+      result += " ";
+    }
+  }
+
+  return result;
+};
+
 function trimSpaces(s) {
   let output = [];
 
@@ -99,6 +174,14 @@ function trimSpaces(s) {
   return output;
 }
 
+const reverse = (arr, left, right) => {
+  while (left < right) {
+    [arr[left], arr[right]] = [arr[right], arr[left]];
+    left++;
+    right--;
+  }
+};
+
 var reverseEachWord = function (arr) {
   let left = 0;
   let n = arr.length;
@@ -119,23 +202,39 @@ var reverseEachWordWithoutCallingReverse = function (arr) {
 
   //catch is right <= n
   for (let right = 0; right <= n; right++) {
-      if (right === n || arr[right] === ' ') {
-          // catch is left < right -1
-          while (left < right -1) {
-              [arr[left], arr[right -1]] = [arr[right -1], arr[left]];
-              left++;
-              right--;
-          }
-          // catch is this increment happens inside if block;
-          left = right + 1;
+    if (right === n || arr[right] === " ") {
+      // catch is left < right -1
+      while (left < right - 1) {
+        [arr[left], arr[right - 1]] = [arr[right - 1], arr[left]];
+        left++;
+        right--;
       }
+      // catch is this increment happens inside if block;
+      left = right + 1;
+    }
   }
 };
 
-const reverse = (arr, left, right) => {
-  while (left < right) {
-    [arr[left], arr[right]] = [arr[right], arr[left]];
+var reverseEachWordDequeue = function (s) {
+  let left = 0,
+    right = s.length - 1;
+  while (left <= right && s.charAt(left) === " ") left++;
+  while (left <= right && s.charAt(right) === " ") right--;
+
+  let d = ["world", "hello"];
+  let word = "";
+
+  // "   hello world  "
+
+  while (left <= right) {
+    if (word.length !== 0 && s.charAt(left) === " ") {
+      d.push(word);
+      word = "";
+    } else if (s.charAt(left) !== " ") {
+      word += s.charAt(left);
+    }
     left++;
-    right--;
   }
+
+  return d.reverse().join(" ");
 };
