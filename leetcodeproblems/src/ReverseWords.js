@@ -21,22 +21,10 @@
 // Time complexity: O(N), where N is the number of characters in the input string.
 // Space complexity: O(N), to store the result of split by spaces.
 
-const reverseWordsSimple = function (s) {
-  s = s.trim();
-  // let words = s.split(/\s+/).reverse();
-  // This code splits str at every space character and then uses filter to remove any empty strings ('') that result from consecutive spaces in the original string
-  let words = s
-    .split(" ")
-    .filter((word) => word.length > 0)
-    .reverse();
-
-  return words.join(" ");
-};
-
 const reverseWords = function (s) {
   let left = 0;
   let right = s.length - 1;
-  // indices move left and right so that they are no traling spaces
+  // indices move left and right so that they are no trailing spaces
   while (left <= right && s[left] === ' ') left++;
   while (left <= right && s[right] === ' ') right--;
 
@@ -70,6 +58,45 @@ const reverseWords = function (s) {
   return reverseString;
 }
 
+const reverseWordsSimple = function (s) {
+  s = s.trim();
+  // let words = s.split(/\s+/).reverse();
+  // This code splits str at every space character and then uses filter to remove any empty strings ('') that result from consecutive spaces in the original string
+  let words = s
+    .split(" ")
+    .filter((word) => word.length > 0)
+    .reverse();
+
+  return words.join(" ");
+};
+
+
+const reverseWordsTwo = function (s) {
+  let words = [];
+  let word = "";
+  for (let i = 0; i <= s.length; i++) {
+    if (s[i] === " " || i === s.length) {
+      if (word) {
+        words.push(word);
+        word = "";
+      }
+    } else {
+      word += s[i];
+    }
+  }
+
+  console.log("**", s, words, words.join());
+
+  let result = "";
+  for (let i = words.length - 1; i >= 0; i--) {
+    result += words[i];
+    if (i > 0) {
+      result += " ";
+    }
+  }
+
+  return result;
+};
 
 // Approach 2: Reverse the Whole String and Then Reverse Each Word
 // The implementation of this approach will be different for Java/Python (= immutable strings) and C++ (= mutable strings).
@@ -114,33 +141,6 @@ const reverseWordsWithoutUsingInbuiltFunction = function (s) {
   reverseEachWord(arr);
 
   return arr.join("");
-};
-
-const reverseWordsTwo = function (s) {
-  let words = [];
-  let word = "";
-  for (let i = 0; i <= s.length; i++) {
-    if (s[i] === " " || i === s.length) {
-      if (word) {
-        words.push(word);
-        word = "";
-      }
-    } else {
-      word += s[i];
-    }
-  }
-
-  console.log("**", s, words, words.join());
-
-  let result = "";
-  for (let i = words.length - 1; i >= 0; i--) {
-    result += words[i];
-    if (i > 0) {
-      result += " ";
-    }
-  }
-
-  return result;
 };
 
 function trimSpaces(s) {
