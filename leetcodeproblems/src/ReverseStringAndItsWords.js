@@ -37,11 +37,11 @@ function reverseWordInPlace(word) {
   return reversedWord;
 }
 
-function reverseArrayInPlace(arr) {
+function reverseArrayInPlace(words) {
   let start = 0;
-  let end = arr.length - 1;
+  let end = words.length - 1;
   while (start < end) {
-    [arr[start], arr[end]] = [arr[end],arr[start]];
+    [words[start], words[end]] = [words[end],words[start]];
     start++;
     end--;
   }

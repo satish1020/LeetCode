@@ -44,51 +44,73 @@
  * @return {string}
  */
 // Approach1
+/**
+ * @param {string} s
+ * @return {string}
+ */
 var reverseWords = function (s) {
-  let words = [];
-  words = splitStringToWords(s);
-
+  // let words = s.split(" ");
+  // remove any trailing spaces.
+  // split s to words at space. 
+  let words = trimAndSplitWords(s)
   for (let i = 0; i < words.length; i++) {
-    words[i] = reverseWord(words[i]);
+      words[i] = reverseWord(words[i])
   }
   return words.join(" ");
 };
 
-const splitStringToWords = (s) => {
-  let word = "";
-  let words = [];
-  for (let i = 0; i < s.length; i++) {
-    if (s[i] !== " ") {
-      word += s[i];
-    } else {
+// trim trailing spaces and spaces in between and return the string
+function trimAndSplitWords(s) {
+const words = [];
+let word = "";
+let start = 0;
+let end = s.length - 1;
+
+// Manually trim leading spaces
+while (start <= end && s[start] === " ") {
+  start++;
+}
+
+// Manually trim trailing spaces
+while (end >= start && s[end] === " ") {
+  end--;
+}
+
+// Process the string within the trimmed boundaries
+for (let i = start; i <= end; i++) {
+  if (s[i] === " ") {
+    if (word.length > 0) {
       words.push(word);
       word = "";
     }
+  } else {
+    word += s[i];
   }
-  // add last word
-  if (word.length > 0) {
-    words.push(word);
-  }
-  return words;
-};
+}
+// this removes any duplicate spaces in the words.
+if (word.length > 0) words.push(word);
+return words;
+}
 
+// reverses words characters
 const reverseWord = (word) => {
   // let chars = word.split("");
+  // split word into characters
   let chars = [];
-  for (let i = 0; i < word.length; i++) {
-    chars.push(word[i]);
+  for(let i=0;i< word.length;i++){
+      chars.push(word[i]);
   }
+  // reverse the characters
   let startIndex = 0;
   let endIndex = word.length - 1;
 
   while (startIndex < endIndex) {
-    [chars[startIndex], chars[endIndex]] = [chars[endIndex], chars[startIndex]];
-    startIndex++;
-    endIndex--;
+      [chars[startIndex], chars[endIndex]] = [chars[endIndex], chars[startIndex]];
+      startIndex++;
+      endIndex--;
   }
   return chars.join("");
-};
-
+}
 
 // Approach 2, prepending and appending string.
 // O(N) time complexity
@@ -107,7 +129,6 @@ function reverseWordsInAString(s) {
   result += word; // Add the last word
   return result;
 }
-
 
 function reverseWordsInAStringUsingJavascriptInBuiltFunctions(str) {
     return str
