@@ -55,6 +55,18 @@
 // space compLexity is O(1), because we modify the original array instead of creating a new one.
 
 const prefixSum= (nums)=>{
+  let n = nums.length;
+  //  creates a new array with n elements, all of which are undefined by default, and then sets the first element to the first element of nums.
+   let prefixSum = [nums[0]];   
+     // prefixSum[0] = nums[0];
+   for(let i=1;i<n;i++){  
+    // prefixSum[i] = nums[i]+ prefixSum[i-1];
+    prefixSum.push(nums[i]+ prefixSum[i-1]);
+   }
+   return prefixSum;
+}
+
+const prefixSumApproach1= (nums)=>{
     let n = nums.length;
     //  creates a new array with n elements, all of which are undefined by default, and then sets the first element to the first element of nums.
      let prefixSum = new Array(n);   
@@ -64,6 +76,7 @@ const prefixSum= (nums)=>{
      }
      return prefixSum;
 }
+
 
 // Approach2
 const prefixSumApproach2 = (nums) => {
@@ -185,4 +198,48 @@ var waysToSplitArray = function (nums) {
     }
   }
   return ans;
+};
+
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+
+const isAlphabet = (char) => {
+  // console.log('###', char, char.charCodeAt())
+  let asciValue = char.charCodeAt(0);
+  console.log('***isAlphabet', ((asciValue >= 65 && asciValue <= 90) || (asciValue >= 97 && asciValue <= 122)));
+
+  return ((asciValue >= 65 && asciValue <= 90) || (asciValue >= 97 && asciValue <= 122));
+}
+var reverseOnlyLetters = function (s) {
+  let n = s.length - 1;
+  let startIndex = 0;
+  let endIndex = n;
+  // start index, end index start++, end--
+  // if both are characters swap
+
+  let chars = [];
+  for (var i = 0; i < n; i++) {
+      chars.push(s[i]);
+  }
+
+  while (startIndex < endIndex) {
+      console.log('***charsn before', chars, chars[startIndex])
+      // swap alphabets if both are true;
+      if (isAlphabet(chars[startIndex]) && isAlphabet(chars[endIndex])) {
+          [chars[startIndex], chars[endIndex]] = [chars[endIndex], chars[startIndex]];
+      }
+      startIndex++;
+      endIndex--;
+  }
+  console.log('***chars', chars)
+  return chars.join("'")
+
 };
