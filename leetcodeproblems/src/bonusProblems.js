@@ -3,8 +3,6 @@
 // All the English letters (lowercase or uppercase) should be reversed.
 // Return s after reversing it.
 
- 
-
 // Example 1:
 
 // Input: s = "ab-cd"
@@ -17,7 +15,6 @@
 
 // Input: s = "Test1ng-Leet=code-Q!"
 // Output: "Qedo1ct-eeLg=ntse-T!"
- 
 
 // Constraints:
 
@@ -25,40 +22,43 @@
 // s consists of characters with ASCII values in the range [33, 122].
 // s does not contain '\"' or '\\'.
 
-
 var reverseOnlyLetters = function (s) {
-    let n = s.length;
-    let startIndex = 0;
-    let endIndex = n;
-    // start index, end index start++, end--
-    // if both are characters swap
+  let n = s.length;
+  let startIndex = 0;
+  let endIndex = n;
+  // start index, end index start++, end--
+  // if both are characters swap
 
-    let chars = [];
-    for (var i = 0; i < n; i++) {
-        chars.push(s[i]);
+  let chars = [];
+  for (var i = 0; i < n; i++) {
+    chars.push(s[i]);
+  }
+
+  while (startIndex <= endIndex) {
+    // swap alphabets if both are true;
+    const startAsciValue = s.charCodeAt(startIndex);
+    const endAsciValue = s.charCodeAt(endIndex);
+    const isValidStartAsciValue =
+      (startAsciValue >= 65 && startAsciValue <= 90) ||
+      (startAsciValue >= 97 && startAsciValue <= 122);
+    const isValidEndAsciValue =
+      (endAsciValue >= 65 && endAsciValue <= 90) ||
+      (endAsciValue >= 97 && endAsciValue <= 122);
+
+    if (!isValidStartAsciValue) {
+      startIndex++;
+    } else if (!isValidEndAsciValue) {
+      endIndex--;
+    } else {
+      [chars[startIndex], chars[endIndex]] = [
+        chars[endIndex],
+        chars[startIndex],
+      ];
+      startIndex++;
+      endIndex--;
     }
-
-    while (startIndex <= endIndex) {
-        // swap alphabets if both are true;
-        const startAsciValue = s.charCodeAt(startIndex);
-        const endAsciValue = s.charCodeAt(endIndex);
-        const isValidStartAsciValue = (startAsciValue >= 65 && startAsciValue <= 90) || (startAsciValue >= 97 && startAsciValue <= 122);
-        const isValidEndAsciValue = (endAsciValue >= 65 && endAsciValue <= 90) || (endAsciValue >= 97 && endAsciValue <= 122);
-
-        if (!isValidStartAsciValue) {
-            startIndex++
-        } else if (!isValidEndAsciValue) {
-            endIndex--;
-        } else {
-            [chars[startIndex], chars[endIndex]] = [chars[endIndex], chars[startIndex]];
-            startIndex++;
-            endIndex--;
-        }
-
-    }
-    console.log('***chars', chars)
-    return chars.join("")
-
+  }
+  return chars.join("");
 };
 
 // Given two integer arrays nums1 and nums2, sorted in non-decreasing order, return the minimum integer common to both arrays. If there is no common integer amongst nums1 and nums2, return -1.
@@ -76,28 +76,25 @@ var reverseOnlyLetters = function (s) {
 // 1 <= nums1[i], nums2[j] <= 109
 // Both nums1 and nums2 are sorted in non-decreasing order.
 
-var getCommonValue = function(nums1, nums2) {
-    let firstPointer = 0;
-    let secondPointer = 0;
-    while(firstPointer < nums1.length && secondPointer < nums2.length){
-        if(nums1[firstPointer] < nums2[secondPointer]){
-            firstPointer++
-        }else if(nums1[firstPointer] > nums2[secondPointer]){
-            secondPointer++
-        } else {
-            return nums1[firstPointer];
-        }
+var getCommonValue = function (nums1, nums2) {
+  let firstPointer = 0;
+  let secondPointer = 0;
+  while (firstPointer < nums1.length && secondPointer < nums2.length) {
+    if (nums1[firstPointer] < nums2[secondPointer]) {
+      firstPointer++;
+    } else if (nums1[firstPointer] > nums2[secondPointer]) {
+      secondPointer++;
+    } else {
+      return nums1[firstPointer];
     }
-    return -1;
-    
+  }
+  return -1;
 };
 
 // Question
 // Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
 
 // Note that you must do this in-place without making a copy of the array.
-
- 
 
 // Example 1:
 
@@ -107,13 +104,12 @@ var getCommonValue = function(nums1, nums2) {
 
 // Input: nums = [0]
 // Output: [0]
- 
 
 // Constraints:
 
 // 1 <= nums.length <= 104
 // -231 <= nums[i] <= 231 - 1
- 
+
 // Follow up: Could you minimize the total number of operations done?
 
 // Hint 1
@@ -122,26 +118,27 @@ var getCommonValue = function(nums1, nums2) {
 // A two-pointer approach could be helpful here. The idea would be to have one pointer for iterating the array and another pointer that just works on the non-zero elements of the array.
 
 var moveZeroes = function (nums) {
-    let write = 0;
-    let n = nums.length;
-    // [0,1,0,3,2]
-    // output [1,3,2,3,2].
-    for (let read = 0; read < n; read++) {
-        if (nums[read] !== 0) {
-            if (read !== write) { // Check if read and write are different
-                nums[write] = nums[read];
-            }
-            write++;
-        }
+  let write = 0;
+  let n = nums.length;
+  // [0,1,0,3,2]
+  // output [1,3,2,3,2].
+  for (let read = 0; read < n; read++) {
+    if (nums[read] !== 0) {
+      if (read !== write) {
+        // Check if read and write are different
+        nums[write] = nums[read];
+      }
+      write++;
     }
+  }
 
-    // after the loop, write is at 3
-    // Fill the rest of the array with 0
-    // from write 3 to 5 fill with 0x
-    // output [1,3,2,0,0]
-    while (write < n) {
-        nums[write++] = 0;
-    }
+  // after the loop, write is at 3
+  // Fill the rest of the array with 0
+  // from write 3 to 5 fill with 0x
+  // output [1,3,2,0,0]
+  while (write < n) {
+    nums[write++] = 0;
+  }
 };
 
 // Question: Given a 0-indexed string word and a character ch, reverse the segment of word that starts at index 0 and ends at the index of the first occurrence of ch (inclusive). If the character ch does not exist in word, do nothing.
@@ -172,33 +169,183 @@ var moveZeroes = function (nums) {
  * @return {string}
  */
 var reversePrefix = function (word, ch) {
-    let chFound = false;
-    let chIndex = -1;
-    let result = "";
-  
-    // Step 2: Find `ch` position
-    for (let i = 0; i < word.length; i++) {
-      if (word[i] === ch && !chFound) {
-        chIndex = i;
-        chFound = true;
-        break; // Exit loop after finding the first occurrence of `ch`
+  let chFound = false;
+  let chIndex = -1;
+  let result = "";
+
+  // Step 2: Find `ch` position
+  for (let i = 0; i < word.length; i++) {
+    if (word[i] === ch && !chFound) {
+      chIndex = i;
+      chFound = true;
+      break; // Exit loop after finding the first occurrence of `ch`
+    }
+  }
+
+  // If `ch` is not found, return the original word
+  if (!chFound) return word;
+
+  // Step 3: Reverse Prefix
+  for (let i = chIndex; i >= 0; i--) {
+    result += word[i];
+  }
+
+  // Step 4: Append Remaining
+  for (let i = chIndex + 1; i < word.length; i++) {
+    result += word[i];
+  }
+
+  // Step 5: Return Result
+  return result;
+};
+
+//   Given an array of positive integers nums and a positive integer target, return the minimal length of a
+// subarray
+//  whose sum is greater than or equal to target. If there is no such subarray, return 0 instead.
+
+// Example 1:
+
+// Input: target = 7, nums = [2,3,1,2,4,3]
+// Output: 2
+// Explanation: The subarray [4,3] has the minimal length under the problem constraint.
+// Example 2:
+
+// Input: target = 4, nums = [1,4,4]
+// Output: 1
+// Example 3:
+
+// Input: target = 11, nums = [1,1,1,1,1,1,1,1]
+// Output: 0
+
+// Constraints:
+
+// 1 <= target <= 109
+// 1 <= nums.length <= 105
+// 1 <= nums[i] <= 104
+var minSubArrayLen = function (target, nums) {
+  // Initialize variables
+  let curr = 0; // Current sum of the subarray
+  let left = 0; // Left pointer for the subarray
+  let ans = Infinity; // Store the result, initialized to Infinity to handle case where no subarray is found
+
+  // Iterate through the array with the right pointer
+  for (let right = 0; right < nums.length; right++) {
+    curr += nums[right]; // Add the current element to the current sum
+
+    // Try to shrink the window from the left if the current sum exceeds the target
+    while (curr >= target) {
+      ans = Math.min(ans, right - left + 1); // Update the answer if a smaller subarray is found
+      curr -= nums[left]; // Subtract the element at the left pointer from the current sum
+      left++; // Move the left pointer to the right
+    }
+  }
+
+  // If ans is Infinity, no such subarray was found. Return 0 in this case.
+  return ans === Infinity ? 0 : ans;
+};
+
+/**
+ * @param {string} s
+ * @param {number} k
+ * @return {number}
+ */
+/**
+ * @param {string} s
+ * @param {number} k
+ * @return {number}
+ */
+var maxVowels = function (s, k) {
+  let left = 0;
+  let ans = 0;
+  let vowelsCount = 0;
+  const vowels = ["a", "e", "i", "o", "u"];
+
+  for (let right = 0; right < s.length; s++) {
+    if (vowels.includes(s[right])) {
+      vowelsCount++;
+    }
+    let windowSize = right - left + 1;
+    if (windowSize > k) {
+      if (vowels.includes(s[left])) {
+        vowelsCount--;
       }
+      left++;
     }
-  
-    // If `ch` is not found, return the original word
-    if (!chFound) return word;
-  
-    // Step 3: Reverse Prefix
-    for (let i = chIndex; i >= 0; i--) {
-      result += word[i];
+    ans = Math.max(ans, vowelsCount);
+  }
+  return ans;
+};
+
+/**
+ * @param {string} s
+ * @param {string} t
+ * @param {number} maxCost
+ * @return {number}
+ */
+
+// Code
+
+
+// Testcase
+// Testcase
+// Test Result
+// 1208. Get Equal Substrings Within Budget
+// Solved
+// Medium
+// Topics
+// Companies
+// Hint
+// You are given two strings s and t of the same length and an integer maxCost.
+
+// You want to change s to t. Changing the ith character of s to ith character of t costs |s[i] - t[i]| (i.e., the absolute difference between the ASCII values of the characters).
+
+// Return the maximum length of a substring of s that can be changed to be the same as the corresponding substring of t with a cost less than or equal to maxCost. If there is no substring from s that can be changed to its corresponding substring from t, return 0.
+
+ 
+
+// Example 1:
+
+// Input: s = "abcd", t = "bcdf", maxCost = 3
+// Output: 3
+// Explanation: "abc" of s can change to "bcd".
+// That costs 3, so the maximum length is 3.
+// Example 2:
+
+// Input: s = "abcd", t = "cdef", maxCost = 3
+// Output: 1
+// Explanation: Each character in s costs 2 to change to character in t,  so the maximum length is 1.
+// Example 3:
+
+// Input: s = "abcd", t = "acde", maxCost = 0
+// Output: 1
+// Explanation: You cannot make any change, so the maximum length is 1.
+ 
+
+// Constraints:
+
+// 1 <= s.length <= 105
+// t.length == s.length
+// 0 <= maxCost <= 106
+// s and t consist of only lowercase English letters.
+var equalSubstringWithBudget = function(s, t, maxCost) {
+  let left = 0;
+  let ans = 0;
+  let currentCost = 0;
+
+  for (let right = 0; right < s.length; right++) {
+    let cost = Math.abs(s.charCodeAt(right) - t.charCodeAt(right));
+    currentCost += cost;
+
+    while (currentCost > maxCost) {
+      currentCost -= Math.abs(s.charCodeAt(left) - t.charCodeAt(left));
+      left++;
     }
-  
-    // Step 4: Append Remaining
-    for (let i = chIndex + 1; i < word.length; i++) {
-      result += word[i];
-    }
-  
-    // Step 5: Return Result
-    return result;
-  };
-  
+
+    ans = Math.max(ans, right - left + 1);
+  }
+
+  return ans;
+};
+
+
+
