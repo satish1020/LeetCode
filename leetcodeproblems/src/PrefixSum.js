@@ -58,10 +58,11 @@ const prefixSum= (nums)=>{
   let n = nums.length;
   //  creates a new array with n elements, all of which are undefined by default, and then sets the first element to the first element of nums.
    let prefixSum = [nums[0]];   
-     // prefixSum[0] = nums[0];
+     // prefixSum[0] = nums[0];  
    for(let i=1;i<n;i++){  
     // prefixSum[i] = nums[i]+ prefixSum[i-1];
-    prefixSum.push(nums[i]+ prefixSum[i-1]);
+    // prefixSum.push(nums[i]+ prefixSum[i-1]);
+     prefixSum.push(nums[i]+ prefixSum[prefixSum.length-1]);
    }
    return prefixSum;
 }
