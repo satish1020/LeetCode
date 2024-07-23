@@ -285,7 +285,6 @@ var maxVowels = function (s, k) {
 
 // Code
 
-
 // Testcase
 // Testcase
 // Test Result
@@ -300,8 +299,6 @@ var maxVowels = function (s, k) {
 // You want to change s to t. Changing the ith character of s to ith character of t costs |s[i] - t[i]| (i.e., the absolute difference between the ASCII values of the characters).
 
 // Return the maximum length of a substring of s that can be changed to be the same as the corresponding substring of t with a cost less than or equal to maxCost. If there is no substring from s that can be changed to its corresponding substring from t, return 0.
-
- 
 
 // Example 1:
 
@@ -319,7 +316,6 @@ var maxVowels = function (s, k) {
 // Input: s = "abcd", t = "acde", maxCost = 0
 // Output: 1
 // Explanation: You cannot make any change, so the maximum length is 1.
- 
 
 // Constraints:
 
@@ -327,7 +323,7 @@ var maxVowels = function (s, k) {
 // t.length == s.length
 // 0 <= maxCost <= 106
 // s and t consist of only lowercase English letters.
-var equalSubstringWithBudget = function(s, t, maxCost) {
+var equalSubstringWithBudget = function (s, t, maxCost) {
   let left = 0;
   let ans = 0;
   let currentCost = 0;
@@ -347,5 +343,30 @@ var equalSubstringWithBudget = function(s, t, maxCost) {
   return ans;
 };
 
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var pivotIndex = function (nums) {
+  let n = nums.length;
+  let prefixSum = new Array(n);
+  prefixSum[0] = nums[0];
 
+  // Calculate prefix sum array
+  for (let i = 1; i < n; i++) {
+    prefixSum[i] = prefixSum[i - 1] + nums[i];
+  }
 
+  for (let i = 0; i < n; i++) {
+    let leftSum = i === 0 ? 0 : prefixSum[i - 1];
+    let rightSum = prefixSum[n - 1] - prefixSum[i];
+    if (leftSum === rightSum) {
+      return i;
+    }
+  }
+  return -1;
+};

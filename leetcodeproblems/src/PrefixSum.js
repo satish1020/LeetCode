@@ -219,6 +219,29 @@ const isAlphabet = (char) => {
 
   return ((asciValue >= 65 && asciValue <= 90) || (asciValue >= 97 && asciValue <= 122));
 }
+
+var pivotIndex = function(nums) {
+  let n = nums.length;
+  let prefixSum = new Array(n);
+  prefixSum[0] = nums[0];
+
+  // Calculate prefix sum array
+  for (let i = 1; i < n; i++) {
+      prefixSum[i] = prefixSum[i - 1] + nums[i];
+  }
+
+  if (prefixSum[n - 1] - nums[0] === 0) return 0; // Check if pivot is at index 0
+
+  for (let i = 1; i < n; i++) {
+      let leftSum = prefixSum[i - 1];
+      let rightSum = prefixSum[n - 1] - prefixSum[i];
+      if (leftSum === rightSum) {
+          return i;
+      }
+  }
+  return -1;
+};
+
 var reverseOnlyLetters = function (s) {
   let n = s.length - 1;
   let startIndex = 0;
