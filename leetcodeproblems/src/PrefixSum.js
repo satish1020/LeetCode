@@ -65,7 +65,9 @@ const prefixSum= (nums)=>{
      prefixSum.push(nums[i]+ prefixSum[prefixSum.length-1]);
    }
    return prefixSum;
-}
+// }
+// Prefix sums allow us to find the sum of any subarray in 
+// 𝑂(1). If we want the sum of the subarray from i to j (inclusive), then the answer is prefix[j] - prefix[i - 1], or prefix[j] - prefix[i] + nums[i] if you don't want to deal with the out of bounds case when i = 0.
 
 const prefixSumApproach1= (nums)=>{
     let n = nums.length;
