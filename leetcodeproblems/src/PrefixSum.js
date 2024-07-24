@@ -61,8 +61,8 @@ const prefixSum= (nums)=>{
      // prefixSum[0] = nums[0];  
    for(let i=1;i<n;i++){  
     // prefixSum[i] = nums[i]+ prefixSum[i-1];
-    // prefixSum.push(nums[i]+ prefixSum[i-1]);
-     prefixSum.push(nums[i]+ prefixSum[prefixSum.length-1]);
+    prefixSum.push(nums[i]+ prefixSum[i-1]);
+    //  prefixSum.push(nums[i]+ prefixSum[prefixSum.length-1]);
    }
    return prefixSum;
 // }

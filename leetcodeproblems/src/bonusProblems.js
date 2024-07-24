@@ -1,3 +1,4 @@
+// 917. Reverse Only Letters
 // Given a string s, reverse the string according to the following rules:
 // All the characters that are not English letters remain in the same position.
 // All the English letters (lowercase or uppercase) should be reversed.
@@ -61,6 +62,7 @@ var reverseOnlyLetters = function (s) {
   return chars.join("");
 };
 
+// 2540. Minimum Common Value
 // Given two integer arrays nums1 and nums2, sorted in non-decreasing order, return the minimum integer common to both arrays. If there is no common integer amongst nums1 and nums2, return -1.
 // Note that an integer is said to be common to nums1 and nums2 if both arrays have at least one occurrence of that integer.
 // Example 1:
@@ -91,6 +93,7 @@ var getCommonValue = function (nums1, nums2) {
   return -1;
 };
 
+// 283. Move Zeroes
 // Question
 // Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements.
 
@@ -141,6 +144,7 @@ var moveZeroes = function (nums) {
   }
 };
 
+// 2000. Reverse Prefix of Word
 // Question: Given a 0-indexed string word and a character ch, reverse the segment of word that starts at index 0 and ends at the index of the first occurrence of ch (inclusive). If the character ch does not exist in word, do nothing.
 // For example, if word = "abcdefd" and ch = "d", then you should reverse the segment that starts at 0 and ends at 3 (inclusive). The resulting string will be "dcbaefd".
 // Return the resulting string.
@@ -199,6 +203,8 @@ var reversePrefix = function (word, ch) {
   return result;
 };
 
+// 209. Minimum Size Subarray Sum
+
 //   Given an array of positive integers nums and a positive integer target, return the minimal length of a
 // subarray
 //  whose sum is greater than or equal to target. If there is no such subarray, return 0 instead.
@@ -244,16 +250,36 @@ var minSubArrayLen = function (target, nums) {
   return ans === Infinity ? 0 : ans;
 };
 
+// 1456. Maximum Number of Vowels in a Substring of Given Length
+// Given a string s and an integer k, return the maximum number of vowel letters in any substring of s with length k.
+// Vowel letters in English are 'a', 'e', 'i', 'o', and 'u'.
+// Example 1:
+
+// Input: s = "abciiidef", k = 3
+// Output: 3
+// Explanation: The substring "iii" contains 3 vowel letters.
+// Example 2:
+
+// Input: s = "aeiou", k = 2
+// Output: 2
+// Explanation: Any substring of length 2 contains 2 vowels.
+// Example 3:
+
+// Input: s = "leetcode", k = 3
+// Output: 2
+// Explanation: "lee", "eet" and "ode" contain 2 vowels.
+
+// Constraints:
+
+// 1 <= s.length <= 105
+// s consists of lowercase English letters.
+// 1 <= k <= s.length
 /**
  * @param {string} s
  * @param {number} k
  * @return {number}
  */
-/**
- * @param {string} s
- * @param {number} k
- * @return {number}
- */
+
 var maxVowels = function (s, k) {
   let left = 0;
   let ans = 0;
@@ -276,13 +302,7 @@ var maxVowels = function (s, k) {
   return ans;
 };
 
-/**
- * @param {string} s
- * @param {string} t
- * @param {number} maxCost
- * @return {number}
- */
-
+// 1208. Get Equal Substrings Within Budget
 // Code
 
 // Testcase
@@ -323,6 +343,12 @@ var maxVowels = function (s, k) {
 // t.length == s.length
 // 0 <= maxCost <= 106
 // s and t consist of only lowercase English letters.
+/**
+ * @param {string} s
+ * @param {string} t
+ * @param {number} maxCost
+ * @return {number}
+ */
 var equalSubstringWithBudget = function (s, t, maxCost) {
   let left = 0;
   let ans = 0;
@@ -343,10 +369,50 @@ var equalSubstringWithBudget = function (s, t, maxCost) {
   return ans;
 };
 
-/**
- * @param {number[]} nums
- * @return {number}
- */
+// 724. Find Pivot Index
+// Solved
+// Easy
+// Topics
+// Companies
+// Hint
+// Given an array of integers nums, calculate the pivot index of this array.
+
+// The pivot index is the index where the sum of all the numbers strictly to the left of the index is equal to the sum of all the numbers strictly to the index's right.
+
+// If the index is on the left edge of the array, then the left sum is 0 because there are no elements to the left. This also applies to the right edge of the array.
+
+// Return the leftmost pivot index. If no such index exists, return -1.
+
+// Example 1:
+
+// Input: nums = [1,7,3,6,5,6]
+// Output: 3
+// Explanation:
+// The pivot index is 3.
+// Left sum = nums[0] + nums[1] + nums[2] = 1 + 7 + 3 = 11
+// Right sum = nums[4] + nums[5] = 5 + 6 = 11
+// Example 2:
+
+// Input: nums = [1,2,3]
+// Output: -1
+// Explanation:
+// There is no index that satisfies the conditions in the problem statement.
+// Example 3:
+
+// Input: nums = [2,1,-1]
+// Output: 0
+// Explanation:
+// The pivot index is 0.
+// Left sum = 0 (no elements to the left of index 0)
+// Right sum = nums[1] + nums[2] = 1 + -1 = 0
+
+// Constraints:
+
+// 1 <= nums.length <= 104
+// -1000 <= nums[i] <= 1000
+
+// Note: This question is the same as 1991: https://leetcode.com/problems/find-the-middle-index-in-array/
+
 /**
  * @param {number[]} nums
  * @return {number}
@@ -371,7 +437,44 @@ var pivotIndex = function (nums) {
   return -1;
 };
 
+// 1732. Find the Highest Altitude
 
+// There is a biker going on a road trip. The road trip consists of n + 1 points at different altitudes. The biker starts his trip on point 0 with altitude equal 0.
+
+// You are given an integer array gain of length n where gain[i] is the net gain in altitude between points i​​​​​​ and i + 1 for all (0 <= i < n). Return the highest altitude of a point.
+
+// Example 1:
+
+// Input: gain = [-5,1,5,0,-7]
+// Output: 1
+// Explanation: The altitudes are [0,-5,-4,1,1,-6]. The highest is 1.
+// Example 2:
+
+// Input: gain = [-4,-3,-2,-1,4,3,2]
+// Output: 0
+// Explanation: The altitudes are [0,-4,-7,-9,-10,-6,-3,-1]. The highest is 0.
+
+// Constraints:
+
+// n == gain.length
+// 1 <= n <= 100
+// -100 <= gain[i] <= 100
+
+var largestAltitude = function (gain) {
+  // Initialize prefixSum array with the first element of gain to represent the first altitude change
+  // Set the first element to 0 to represent the starting altitude
+  let prefixSum = [0];
+
+  for (let i = 0; i < gain.length; i++) {
+    prefixSum.push(prefixSum[i] + gain[i]);
+  }
+
+  // Find the maximum altitude from the prefixSum array
+  let maxAltitude = Math.max(...prefixSum);
+  return maxAltitude;
+};
+
+// 303. Range Sum Query - Immutable
 /**
  * @param {number[]} nums
  * Range Sum Query - Immutable
@@ -412,16 +515,16 @@ Constraints:
 At most 104 calls will be made to sumRange.
  */
 
-var NumArray = function(nums) {
+var NumArray = function (nums) {
   var prefixSums = new Array(nums.length + 1).fill(0);
   for (let i = 0; i < nums.length; i++) {
     prefixSums[i + 1] = prefixSums[i] + nums[i];
   }
 
   return {
-    sumRange: function(left, right) {
+    sumRange: function (left, right) {
       return prefixSums[right + 1] - prefixSums[left];
-    }
+    },
   };
 };
 // class
