@@ -282,44 +282,393 @@ var repeatedCharacter = function (s) {
  * @param {string} s
  * @return {character}
  */
-var repeatedCharacter = function(s) {
-    let seen = new Set();
-    for (const c of s) {
-        if (seen.has(c)) {
-            return c;
-        }
-        
-        seen.add(c);
+var repeatedCharacter = function (s) {
+  let seen = new Set();
+  for (const c of s) {
+    if (seen.has(c)) {
+      return c;
     }
-    
-    return " ";
+
+    seen.add(c);
+  }
+
+  return " ";
 };
 // This improves our time complexity to O(n) as each for loop iteration now runs in constant time.
 
-// The space complexity is a more interesting topic of discussion. Many people will argue that the space complexity is 
-// O(1) because the input can only have characters from the English alphabet, which is bounded by a constant (26). This is very common with string problems and technically correct. In an interview setting, this is probably a safe answer, but you should also note that the space complexity could be 
+// The space complexity is a more interesting topic of discussion. Many people will argue that the space complexity is
+// O(1) because the input can only have characters from the English alphabet, which is bounded by a constant (26). This is very common with string problems and technically correct. In an interview setting, this is probably a safe answer, but you should also note that the space complexity could be
 // O(m), where m is the number of allowable characters in the input. This is a more general answer and also technically correct.
 
 // Example 3: Given an integer array nums, find all the unique numbers x in nums that satisfy the following: x + 1 is not in nums, and x - 1 is not in nums.
 
-// We can solve this in a straightforward manner - just iterate through nums and check if x + 1 or x - 1 is in nums. By converting nums into a set beforehand, these checks will cost 
+// We can solve this in a straightforward manner - just iterate through nums and check if x + 1 or x - 1 is in nums. By converting nums into a set beforehand, these checks will cost
 // O(1).
 // Converting the input into a set beforehand is another example of pre-processing.
 
-let findNumbers = nums => {
-    let ans = [];
-    let numsSet = new Set(nums);
+let findNumbers = (nums) => {
+  let ans = [];
+  let numsSet = new Set(nums);
 
-    for (const num of numsSet) {
-        if (!numsSet.has(num + 1) && !numsSet.has(num - 1)) {
-            ans.push(num);
-        }
+  for (const num of numsSet) {
+    if (!numsSet.has(num + 1) && !numsSet.has(num - 1)) {
+      ans.push(num);
     }
-    return ans;
-}
+  }
+  return ans;
+};
 
-// Because the checks are O(1), the time complexity is O(n) since each for loop iteration runs in constant time. The set will occupy 
+//
+// pangram is a sentence where every letter of the English alphabet appears at least once.
+
+// Given a string sentence containing only lowercase English letters, return true if sentence is a pangram, or false otherwise.
+
+ 
+
+// Example 1:
+
+// Input: sentence = "thequickbrownfoxjumpsoverthelazydog"
+// Output: true
+// Explanation: sentence contains at least one of every letter of the English alphabet.
+// Example 2:
+
+// Input: sentence = "leetcode"
+// Output: false
+ 
+
+// Constraints:
+
+// 1 <= sentence.length <= 1000
+// sentence consists of lowercase English letters.
+
+var checkIfPangram = function(sentence) {
+    let set = new Set(sentence); // Directly create a set from the sentence, automatically removing duplicates
+    
+    return set.size === 26; // A pangram must contain exactly 26 unique characters (letters)
+};
+
+// Missing Number
+// Solution
+// Given an array nums containing n distinct numbers in the range [0, n], return the only number in the range that is missing from the array.
+// Example 1:
+// Input: nums = [3,0,1]
+// Output: 2
+// Explanation: n = 3 since there are 3 numbers, so all numbers are in the range [0,3]. 2 is the missing number in the range since it does not appear in nums.
+// Example 2:
+// Input: nums = [0,1]
+// Output: 2
+// Explanation: n = 2 since there are 2 numbers, so all numbers are in the range [0,2]. 2 is the missing number in the range since it does not appear in nums.
+// Example 3:
+// Input: nums = [9,6,4,2,3,5,7,0,1]
+// Output: 8
+// Explanation: n = 9 since there are 9 numbers, so all numbers are in the range [0,9]. 8 is the missing number in the range since it does not appear in nums.
+// Constraints:
+// n == nums.length
+// 1 <= n <= 104
+// 0 <= nums[i] <= n
+// All the numbers of nums are unique.
+// Follow up: Could you implement a solution using only O(1) extra space complexity and O(n) runtime complexity?
+// Because the checks are O(1), the time complexity is O(n) since each for loop iteration runs in constant time. The set will occupy
 // O(n) space.
 
-// Anytime you find your algorithm running if ... in ..., then consider using a hash map or set to store elements to have these operations run in 
+// Anytime you find your algorithm running if ... in ..., then consider using a hash map or set to store elements to have these operations run in
 // O(1). Try these upcoming practice problems with what was learned here.
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var missingNumber = function (nums) {
+  const numbersSet = new Set();
+  const n = nums.length;
+
+  for (const num of nums) {
+    numbersSet.add(num);
+  }
+
+  for (let i = 0; i < n; i++) {
+    console.log("***numbersSet", numbersSet, nums[i]);
+    if (!numbersSet.has(i)) {
+      return i;
+    }
+  }
+  return -1;
+};
+
+// Counting Elements.
+// Given an integer array arr, count how many elements x there are, such that x + 1 is also in arr. If there are duplicates in arr, count them separately.
+// Example 1:
+// Input: arr = [1,2,3]
+// Output: 2
+// Explanation: 1 and 2 are counted cause 2 and 3 are in arr.
+// Example 2:
+// Input: arr = [1,1,3,3,5,5,7,7]
+// Output: 0
+// Explanation: No numbers are counted, cause there is no 2, 4, 6, or 8 in arr.
+/**
+ * @param {number[]} arr
+ * @return {number}
+ */
+/**
+ * @param {number[]} arr
+ * @return {number}
+ */
+var countElements = function (arr) {
+  let countElementSet = new Set(arr); // Populate the set directly from the array
+  let count = 0;
+
+  for (const num of arr) {
+    if (countElementSet.has(num + 1)) {
+      // Only check for the existence of num + 1 in the set
+      count++;
+    }
+  }
+  return count;
+};
+
+// Counting
+// Report Issue
+// Counting is a very common pattern with hash maps. By "counting", we are referring to tracking the frequency of things. This means our hash map will be mapping keys to integers. Anytime you need to count anything, think about using a hash map to do it.
+// Recall that when we were looking at sliding windows, some problems had their constraint as limiting the amount of a certain element in the window. For example, longest substring with at most k 0s. In those problems, we could simply use an integer variable curr because we are only focused on one element (we only cared about 0). A hash map opens the door to solving problems where the constraint involves multiple elements. Let's start by looking at a sliding window example that leverages a hash map.
+// Example 1: You are given a string s and an integer k. Find the length of the longest substring that contains at most k distinct characters.
+// For example, given s = "eceba" and k = 2, return 3. The longest substring with at most 2 distinct characters is "ece".
+// s = "eceba" and k = 2
+//This problem deals with substrings and has a constraint on the substrings (at most k distinct characters). These characteristics let us know that we should consider sliding window. Remember, the idea of a sliding window is to add elements by sliding to the right until the window violates the constraint. Once it does, we shrink the window from the left until it no longer violates the constraint. In this problem, we are concerned with the number of distinct characters in the window. The brute force way to check for this constraint would be to check the entire window every time, which could take 
+// O(n) time. Using a hash map, we can check the constraint in O(1).
+// Let's use a hash map counts to keep count of the characters in the window. This means we will map letters to their frequency. The length (number of keys) in counts at any time is the number of distinct characters. When we remove from the left, we can decrement the frequency of the elements being removed. When the frequency becomes 0, we know this character is no longer part of the window, and we can delete the key.
+let findLongestSubstring = (s, k) => {
+  let charCountMap = new Map();
+  let left = 0;
+  let ans = 0;
+
+  for (let right = 0; right < s.length; right++) {
+    charCountMap.set(s[right], (charCountMap.get(s[right]) || 0) + 1);
+
+    while (charCountMap.size > k) {
+      charCountMap.set(s[left], charCountMap.get(s[left]) - 1);
+      if (charCountMap.get(s[left]) === 0) {
+        charCountMap.delete(s[left]);
+      }
+      left++;
+    }
+
+    ans = Math.max(ans, right - left + 1);
+  }
+  return ans;
+};
+
+// Example 2: 2248. Intersection of Multiple Arrays
+// Given a 2D array nums that contains n arrays of distinct integers, return a sorted array containing all the numbers that appear in all n arrays.
+// For example, given nums = [[3,1,2,4,5],[1,2,3,4],[3,4,5,6]], return [3, 4]. 3 and 4 are the only numbers that are in all arr
+//nums = [[3,1,2,4,5],[1,2,3,4],[3,4,5,6]], return [3, 4]
+/**
+ * @param {number[][]} nums
+ * @return {number[]}
+ */
+var intersection = function (nums) {
+  let counts = new Map();
+  for (const arr of nums) {
+    for (const x of arr) {
+      counts.set(x, (counts.get(x) || 0) + 1);
+    }
+  }
+
+  let n = nums.length;
+  let ans = [];
+  for (const [key, val] of counts) {
+    if (val == n) {
+      ans.push(key);
+    }
+  }
+
+  ans.sort((a, b) => a - b);
+  return ans;
+};
+
+
+// Given an integer array nums, return the largest integer that only occurs once. If no integer occurs once, return -1.
+
+ 
+
+// Example 1:
+
+// Input: nums = [5,7,3,9,4,9,8,3,1]
+// Output: 8
+// Explanation: The maximum integer in the array is 9 but it is repeated. The number 8 occurs only once, so it is the answer.
+// Example 2:
+
+// Input: nums = [9,9,8,8]
+// Output: -1
+// Explanation: There is no number that occurs only once.
+ 
+
+// Constraints:
+
+// 1 <= nums.length <= 2000
+// 0 <= nums[i] <= 1000
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+// nums = [5,7,3,9,4,9,8,3,1]  8
+// map -> {5:1,7:1,3:2,9:2,8:1,4:1, 1:1} --> [5,7,8,4,1]
+var largestUniqueNumber = function(nums) {
+    const numbersCount = new Map();
+    for (const num of nums) {
+        numbersCount.set(num, (numbersCount.get(num) || 0) + 1);
+    }
+
+    let largestUnique = -1;
+    for (const [num, count] of numbersCount) {
+        if (count === 1 && num > largestUnique) {
+            largestUnique = num;
+        }
+    }
+
+    return largestUnique;
+};
+
+// 2225. Find Players With Zero or One Losses
+// Solved
+// Medium
+// Topics
+// Companies
+// Hint
+// You are given an integer array matches where matches[i] = [winneri, loseri] indicates that the player winneri defeated player loseri in a match.
+
+// Return a list answer of size 2 where:
+
+// answer[0] is a list of all players that have not lost any matches.
+// answer[1] is a list of all players that have lost exactly one match.
+// The values in the two lists should be returned in increasing order.
+
+// Note:
+
+// You should only consider the players that have played at least one match.
+// The testcases will be generated such that no two matches will have the same outcome.
+ 
+
+// Example 1:
+
+// Input: matches = [[1,3],[2,3],[3,6],[5,6],[5,7],[4,5],[4,8],[4,9],[10,4],[10,9]]
+// Output: [[1,2,10],[4,5,7,8]]
+// Explanation:
+// Players 1, 2, and 10 have not lost any matches.
+// Players 4, 5, 7, and 8 each have lost one match.
+// Players 3, 6, and 9 each have lost two matches.
+// Thus, answer[0] = [1,2,10] and answer[1] = [4,5,7,8].
+// Example 2:
+
+// Input: matches = [[2,3],[1,3],[5,4],[6,4]]
+// Output: [[1,2,5,6],[]]
+// Explanation:
+// Players 1, 2, 5, and 6 have not lost any matches.
+// Players 3 and 4 each have lost two matches.
+// Thus, answer[0] = [1,2,5,6] and answer[1] = [].
+ 
+
+// Constraints:
+
+// 1 <= matches.length <= 105
+// matches[i].length == 2
+// 1 <= winneri, loseri <= 105
+// winneri != loseri
+// All matches[i] are unique.
+/**
+ * @param {number[][]} matches
+ * @return {number[][]}
+ */
+function findWinners(matches) {
+  const wins = new Set();
+  const losses = new Map();
+
+  // Track wins and losses
+  matches.forEach(([winner, loser]) => {
+    wins.add(winner);
+    losses.set(loser, (losses.get(loser) || 0) + 1);
+  });
+
+  const noLosses = [];
+  const oneLoss = [];
+
+  // Players with no losses are those in wins but not in losses
+  wins.forEach((player) => {
+    if (!losses.has(player)) {
+      noLosses.push(player);
+    }
+  });
+
+  // Players with one loss
+  for (const [player, lossCount] of losses) {
+    if (lossCount === 1) {
+      oneLoss.push(player);
+    }
+  }
+
+  // Sort the results for consistent output
+  noLosses.sort((a, b) => a - b);
+  oneLoss.sort((a, b) => a - b);
+
+  return [noLosses, oneLoss];
+}
+
+// Output: [[1,2,10],[4,5,7,8]]
+// 1189. Maximum Number of Balloons
+/**
+ * @param {string} text
+ * @return {number}
+ * 1189. Maximum Number of Balloons
+Solved
+Easy
+Topics
+Given a string text, you want to use the characters of text to form as many instances of the word "balloon" as possible.
+Example 1:
+
+
+
+Input: text = "nlaebolko"
+Output: 1
+Example 2:
+
+
+
+Input: text = "loonbalxballpoon"
+Output: 2
+Example 3:
+
+Input: text = "leetcode"
+Output: 0
+ 
+
+Constraints:
+
+1 <= text.length <= 104
+text consists of lower case English letters only.
+
+You can use each character in text at most once. Return the maximum number of instances that can be formed.
+ */
+var maxNumberOfBalloons = function (text) {
+    const charCounts = new Map();
+    // Count occurrences of each character in the text
+    for (const char of text) {
+        if ("balloon".includes(char)) {
+            charCounts.set(char, (charCounts.get(char) || 0) + 1);
+        }
+    }
+
+    // Adjust counts for 'l' and 'o' as they appear twice in "balloon"
+    charCounts.set('l', Math.floor((charCounts.get('l') || 0) / 2));
+    charCounts.set('o', Math.floor((charCounts.get('o') || 0) / 2));
+
+    // Find the minimum count among the characters in "balloon"
+    let ans = Math.min(
+        charCounts.get('b') || 0,
+        charCounts.get('a') || 0,
+        charCounts.get('l') || 0,
+        charCounts.get('o') || 0,
+        charCounts.get('n') || 0
+    );
+
+    return ans;
+};
