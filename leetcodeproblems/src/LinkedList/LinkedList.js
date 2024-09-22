@@ -323,36 +323,58 @@ function ListNode(val, next) {
      this.next = (next===undefined ? null : next)
 }
 
-//[1,2,,3,4,5], m = 2, n = 4
-// [1,4,3,2,5]
-var reverseBetween = function (head, m, n) {
+// 1,2,3,4,5,6,7
+// Function to reverse a portion of a linked list from position left to right
+// Example linked list nodes: 1->2->3->4->5->6->7
+// Function to reverse a portion of a linked list from position left to right
+var reverseBetween = function (head, left, right) {
+    // Return null if the list is empty
     if (head === null) {
         return null;
     }
-    let cur = head,
-        prev = null;
-    while (m > 1) {
-        prev = cur;
-        cur = cur.next;
-        m--;
-        n--;
-    }
-    let con = prev,
-        tail = cur;
-    let third = null;
-    while (n > 0) {
-        third = cur.next;
-        cur.next = prev;
-        prev = cur;
-        cur = third;
-        n--;
-    }
-    if (con !== null) {
-        con.next = prev;
-    } else {
 
-        head = prev;
+    // Initialize pointers for traversal
+    let currentNode = head, // currentNode starts at the head of the list, initially pointing to node 1
+        previousNode = null; // previousNode is initially null since we start at the head
+
+    // Move the pointers to the start of the sub-list to be reversed
+    while (left > 1) {
+        previousNode = currentNode; // Track the node just before the start of the sub-list
+        currentNode = currentNode.next; // Advance currentNode to the next node
+        left--; // Decrement left to reach the start position for reversal
+        right--; // Adjust right as we move the currentNode forward
     }
-    tail.next = cur;
-    return head;
+    // At this point, for example, if left was 3, currentNode would be at node 3 and previousNode at node 2
+
+    // Mark the start of the sub-list to be reversed
+    let connectionNode = previousNode, // Node just before the sub-list, will be used to reconnect after reversal
+        subListHead = currentNode; // The first node of the sub-list to be reversed
+
+    let nextNode = null; // Temporary node to assist in reversal
+
+    // Reverse the specified segment of the list
+    while (right > 0) {
+        nextNode = currentNode.next; // Temporarily store the next node
+        currentNode.next = previousNode; // Reverse the link of the current node
+        previousNode = currentNode; // Move previousNode forward to the current node
+        currentNode = nextNode; // Move currentNode forward to the next node
+        right--; // Decrement right until the end of the segment is reached
+    }
+    // For example, if we were reversing from 3 to 5, the list would now look like 1->2<-3<-4<-5 6->7
+    // previousNode would be at node 5, and currentNode at node 6
+
+    // Reconnect the reversed segment with the rest of the list
+    if (connectionNode !== null) {
+        connectionNode.next = previousNode; // Link the node before the segment to the first node of the reversed segment
+    } else {
+        head = previousNode; // If the reversed segment starts at the head, update the head of the list
+    }
+    // Now, the list looks like 1->2->5->4->3->6->7 if reversing nodes 3 to 5
+    // The connectionNode (node 2) now points to previousNode (node 5)
+
+    // The original head of the segment, now the last node of the reversed segment, should point to the next section of the list
+    subListHead.next = currentNode; // Link the last node of the reversed segment to the remainder of the list
+    // Finally, the list is fully connected as 1->2->5->4->3->6->7, with subListHead (originally node 3) now pointing to currentNode (node 6)
+
+    return head; // Return the head of the modified list
 };
