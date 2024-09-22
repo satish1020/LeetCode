@@ -141,3 +141,4 @@ for(let char of s) iterates over iterable objects, such as arrays, strings, and 
 for(let char in s) iterates over the enumerable properties of an object, which means it is used to loop through the keys (property names) of an object. When used with an array or a string, the variable char will be assigned the index (position) of the element or character in the array or string, not the value at each iteration.
 
 Given the context of your function reverseWordsAndCharacters(s), which iterates over a string to manipulate its characters, for(let char of s) is the appropriate choice because you are interested in working directly with the characters of the string s. Using for(let char in s) would give you the indices (numeric positions) of the characters in the string, which is not what you need for this operation. -->
+

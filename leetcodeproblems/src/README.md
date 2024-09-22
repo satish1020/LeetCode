@@ -189,3 +189,159 @@ Host github.com
 26. 𝐠𝐢𝐭 𝐫𝐞𝐬𝐞𝐭 --𝐬𝐨𝐟𝐭 𝐇𝐄𝐀𝐃^: Undo the last commit, but keep the changes.
 27. 𝐠𝐢𝐭 𝐫𝐞𝐬𝐞𝐭 --𝐡𝐚𝐫𝐝: Resets everything to a previous commit, erasing all uncommitted changes.
 28: 𝐠𝐢𝐭 𝐛𝐫𝐚𝐧𝐜𝐡 --𝐬𝐞𝐭-𝐮𝐩𝐬𝐭𝐫𝐞𝐚𝐦-𝐭𝐨 𝐫𝐞𝐦𝐨𝐭𝐞_𝐛𝐫𝐚𝐧𝐜𝐡: Sets the upstream branch to the specified remote branch. -->
+
+<!-- Types of linked lists
+Singly linked list
+
+This is the most common type of linked list and the one that is given in the code above. In a singly linked list, each node only has a pointer to the next node. This means you can only move forward in the list when iterating. The pointer used to reference the next node is usually called next.
+
+Let's say you want to add an element to a linked list so that it becomes the element at position i. To do this, you need to have a pointer to the element currently at position i - 1. The next element (currently at position i), call it x, will be pushed to the element at position i + 1 after the insertion. This means that x should become the next node to the one being added, and the node being added should become the next node to the one currently at i - 1. Here's some code and images demonstrating: -->
+
+<!-- class ListNode {
+    constructor(val) {
+        this.val = val;
+        this.next = null;
+    }
+}
+
+// Let prevNode be the node at position i - 1
+let addNode = (prevNode, nodeToAdd) => {
+    nodeToAdd.next = prevNode.next;
+    prevNode.next = nodeToAdd;
+} -->
+
+<!-- class ListNode {
+    constructor(val) {
+        this.val = val;
+        this.next = null;
+    }
+}
+
+// Let prevNode be the node at position i - 1
+let addNode = (prevNode, nodeToAdd) => {
+    nodeToAdd.next = prevNode.next;
+    prevNode.next = nodeToAdd;
+} -->
+
+<!-- Note: it is unusual that you will have a pointer to the node at the position before where you want to perform an operation, but we are writing these functions as a demonstration. Typically you will be doing these operations on the fly, as you iterate through the list. If you don't have a pointer to the desired position at all, you will need to iterate from the head until you are at the desired position, which means the operation would be 
+O
+(
+n
+)
+O(n). If you have the pointer already, it's 
+O
+(
+1
+)
+O(1). -->
+<!-- 
+Let's say you want to delete the element at position i. Again, you need to have a pointer to the element currently at position i - 1. The element at position i + 1, call it x, will be shifted over to be at position i after the deletion. Therefore, you should set x as the next node to the element currently at position i - 1. Here's some code and images demonstrating: -->
+
+<!-- class ListNode {
+    constructor(val) {
+        this.val = val;
+        this.next = null;
+    }
+}
+
+// Let prevNode be the node at position i - 1
+let deleteNode = prevNode => {
+    prevNode.next = prevNode.next.next;
+} -->
+
+<!-- prevNode.next is the node being deleted. prevNode.next.next is the node after that which should be kept. We change the next pointer of prevNode to point at that node instead of the one being deleted.
+
+Because the node being deleted could only have been reached from prevNode and we have now severed that connection, it is no longer part of the list. -->
+
+<!-- As mentioned before, when you have a reference to the node at i - 1, then insertion and deletion is 
+O
+(
+1
+)
+O(1). However, without that reference, you need to obtain the reference by iterating from the head, which for an arbitrary position is 
+O
+(
+n
+)
+O(n). -->
+
+<!-- Doubly linked list
+
+A doubly linked list is like a singly linked list, but each node also contains a pointer to the previous node. This pointer is usually called prev, and it allows iteration in both directions.
+
+In a singly linked list, we needed a reference to the node at i - 1 if we wanted to add or remove at i. This is because we needed to perform operations on the prevNode. With a doubly linked list, we only need a reference to the node at i. This is because we can simply reference the prev pointer of that node to get the node at i - 1, and then do the exact same operations as above.
+
+With a doubly linked list, we need to do extra work to also update the prev pointers. -->
+
+<!-- class ListNode {
+    constructor(val) {
+        this.val = val;
+        this.next = null;
+        this.prev = null;
+    }
+}
+
+let addNode = (node, nodeToAdd) => {
+    let prevNode = node.prev;
+    nodeToAdd.next = node;
+    nodeToAdd.prev = prevNode;
+    prevNode.next = nodeToAdd;
+    node.prev = nodeToAdd;
+}
+
+let deleteNode = node => {
+    let prevNode = node.prev;
+    let nextNode = node.next;
+    prevNode.next = nextNode;
+    nextNode.prev = prevNode;
+} -->
+
+
+
+<!-- 2130. Maximum Twin Sum of a Linked List
+Solved
+Medium
+Topics
+Companies
+Hint
+In a linked list of size n, where n is even, the ith node (0-indexed) of the linked list is known as the twin of the (n-1-i)th node, if 0 <= i <= (n / 2) - 1.
+
+For example, if n = 4, then node 0 is the twin of node 3, and node 1 is the twin of node 2. These are the only nodes with twins for n = 4.
+The twin sum is defined as the sum of a node and its twin.
+
+Given the head of a linked list with even length, return the maximum twin sum of the linked list.
+
+ 
+
+Example 1:
+
+
+Input: head = [5,4,2,1]
+Output: 6
+Explanation:
+Nodes 0 and 1 are the twins of nodes 3 and 2, respectively. All have twin sum = 6.
+There are no other nodes with twins in the linked list.
+Thus, the maximum twin sum of the linked list is 6. 
+Example 2:
+
+
+Input: head = [4,2,2,3]
+Output: 7
+Explanation:
+The nodes with twins present in this linked list are:
+- Node 0 is the twin of node 3 having a twin sum of 4 + 3 = 7.
+- Node 1 is the twin of node 2 having a twin sum of 2 + 2 = 4.
+Thus, the maximum twin sum of the linked list is max(7, 4) = 7. 
+Example 3:
+
+
+Input: head = [1,100000]
+Output: 100001
+Explanation:
+There is only one node with a twin in the linked list having twin sum of 1 + 100000 = 100001.
+ 
+
+Constraints:
+
+The number of nodes in the list is an even integer in the range [2, 105].
+1 <= Node.val <= 105 -->
