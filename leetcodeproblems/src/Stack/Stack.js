@@ -210,8 +210,6 @@ function simplifyPath(path) {
 
 // Notice that an empty string is also good.
 
- 
-
 // Example 1:
 
 // Input: s = "leEeetcode"
@@ -228,7 +226,6 @@ function simplifyPath(path) {
 
 // Input: s = "s"
 // Output: "s"
- 
 
 // Constraints:
 
@@ -258,4 +255,62 @@ var makeGood = function (s) {
     }
   }
   return stack.join("");
+};
+
+// Given a circular integer array nums (i.e., the next element of nums[nums.length - 1] is nums[0]), return the next greater number for every element in nums.
+
+// The next greater number of a number x is the first greater number to its traversing-order next in the array, which means you could search circularly to find its next greater number. If it doesn't exist, return -1 for this number.
+
+ 
+
+// Example 1:
+
+// Input: nums = [1,2,1]
+// Output: [2,-1,2]
+// Explanation: The first 1's next greater number is 2; 
+// The number 2 can't find next greater number. 
+// The second 1's next greater number needs to search circularly, which is also 2.
+// Example 2:
+
+// Input: nums = [1,2,3,4,3]
+// Output: [2,3,4,-1,4]
+ 
+
+// Constraints:
+
+// 1 <= nums.length <= 104
+// -109 <= nums[i] <= 109
+const nextGreaterElementsCircular = function (nums) {
+  let res = new Array(nums.length).fill(-1);
+  let stack = [];
+
+  for (var i = 0; i < 2 * nums.length; i++) {
+      let index = nums % i;
+      while (stack.length > 0 && nums[index] > nums[stack[stack.length - 1]]) {
+          res[stack.pop()] = nums[index];
+      }
+      if (i < nums.length) {
+          stack.push(i);
+      }
+  }
+  return res;
+}
+
+const nextGreaterElementsNonCircular = (arr, n) => {
+  // code here
+  let res = new Array(n).fill(-1); // Initialize result array with -1
+  let stack = []; // Stack to keep track of elements for which we are looking for the next greater element
+
+  for (let i = 0; i < n; i++) {
+    // While stack is not empty and the current element is greater than the element at the top of the stack
+    while (stack.length > 0 && arr[i] > arr[stack[stack.length - 1]]) {
+      // The next greater element for the element at the top of the stack is the current element
+      res[stack.pop()] = arr[i];
+    }
+    // Push the current index to the stack
+    stack.push(i);
+  }
+
+  // The stack will be left with elements that do not have a next greater element, for them, the result is already set to -1
+  return res;
 };

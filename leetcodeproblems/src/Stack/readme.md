@@ -52,3 +52,76 @@ For example, given s = "ab#c" and t = "ad#c", return true. Because of the backsp
 Once again, we can recognize that the backspace follows the LIFO pattern, where the first character to be deleted is the one that was most recently typed. We can just simulate the typing of the strings using a stack, and then compare them at the end.
 
 When typing characters, push them onto a stack. Whatever character is at the top of the stack is the most recently typed character, so when we backspace, we can just pop. Make sure to be careful of the edge case where we backspace on an empty string.
+
+Given a circular integer array nums (i.e., the next element of nums[nums.length - 1] is nums[0]), return the next greater number for every element in nums.
+
+The next greater number of a number x is the first greater number to its traversing-order next in the array, which means you could search circularly to find its next greater number. If it doesn't exist, return -1 for this number.
+
+
+Approach 1: Brute Force (using Double Length Array) [Time Limit Exceeded]
+Algorithm
+In this method, we make use of an array doublenums which is formed by concatenating two copies of the given nums array one after the other. Now, when we need to find out the next greater element for nums[i], we can simply scan all the elements doublenums[j], such that i<j<length(doublenums). The first element found satisfying the given condition is the required result for nums[i]. If no such element is found, we put a -1 at the appropriate position in the res array.
+Complexity Analysis
+Time complexity : O(n 
+2
+ ). The complete doublenums array(of size 2n) is scanned for all the elements of nums in the worst case.
+
+Space complexity : O(n). doublenums array of size 2n is used. res array of size n is used.
+function nextGreaterElements(nums) {
+  const res = new Array(nums.length).fill(-1);
+  const doublenums = nums.concat(nums); // Concatenate nums with itself to simulate circular array
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < doublenums.length; j++) {
+      if (doublenums[j] > nums[i]) {
+        res[i] = doublenums[j];
+        break;
+      }
+    }
+  }
+  return res;
+}
+
+
+Approach 2: Better Brute Force [Accepted]
+Algorithm
+Instead of making a double length copy of nums array , we can traverse circularly in the nums array by making use of the modulus operator. For every element nums[i], we start searching in the nums array(of length n) from the index (i+1) and look at the next (circularly) n−1 elements. For nums[i] we do so by scanning over nums[j], such that
+(i+1), and we look for the first greater element found. If no such element is found, we put a -1 at the appropriate position in the res array.
+
+function nextGreaterElements(nums) {
+  const res = new Array(nums.length).fill(-1);
+  const doublenums = nums.concat(nums); // Concatenate nums with itself to simulate circular array
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < doublenums.length; j++) {
+      if (doublenums[j] > nums[i]) {
+        res[i] = doublenums[j];
+        break;
+      }
+    }
+  }
+  return res;
+}
+
+Approach 3: Using Stack [Accepted]
+Algorithm
+This approach makes use of a stack. This stack stores the indices of the appropriate elements from nums array. The top of the stack refers to the index of the Next Greater Element found so far. We store the indices instead of the elements since there could be duplicates in the nums array. The description of the method will make the above statement clearer.
+
+We start traversing the nums array from right towards the left. For an element nums[i] encountered, we pop all the elements
+stack[top] from the stack such that nums[stack[top]]≤nums[i]. We continue the popping till we encounter a stack[top] satisfying nums[stack[top]]>nums[i]. Now, it is obvious that the current stack[top] only can act as the
+Next Greater Element for nums[i](right now, considering only the elements lying to the right of nums[i]).
+
+If no element remains on the top of the stack, it means no larger element than nums[i] exists to its right. Along with this, we also push the index of the element just encountered(nums[i]), i.e. i over the top of the stack, so that nums[i](or stack[top]) now acts as the Next Greater Element for the elements lying to its left.
+
+We go through two such passes over the complete nums array. This is done so as to complete a circular traversal over the nums array. The first pass could make some wrong entries in the res array since it considers only the elements lying to the right of nums[i], without a circular traversal. But, these entries are corrected in the second pass.
+
+Further, to ensure the correctness of the method, let's look at the following cases.
+
+Assume that nums[j] is the correct Next Greater Element for nums[i], such that i<j≤stack[top]. Now, whenever we encounter nums[j], if nums[j]>nums[stack[top]], it would have already popped the previous stack[top] and j would have become the topmost element. On the other hand, if nums[j]<nums[stack[top]], it would have become the topmost element by being pushed above the previous stack[top]. In both the cases, if nums[j]>nums[i], it will be correctly determined to be the Next Greater Element.
+
+The following example makes the procedure clear:
+
+As the animation above depicts, after the first pass, there are a number of wrong entries(marked as -1) in the res array, because only the elements lying to the corresponding right(non-circular) have been considered till now. But, after the second pass, the correct values are substituted.
+
+Complexity Analysis
+Time complexity : O(n). Only two traversals of the nums array are done. Further, at most 2n elements are pushed and popped from the stack.
+
+Space complexity : O(n). A stack of size n is used. res array of size n is used.
