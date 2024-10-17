@@ -43,14 +43,14 @@ queue.length; // 3
 // ans [1, 2,3,2] ---> length of the queue is number of calls happened in lat 3000 units of time.
 // We have a stream of increasing integers, and every time we add an integer to the stream, we need to find how many numbers are in the stream within 3000. The brute force method would be to put all the integers in an array, and iterate over the array each time to count how many integers are within 3000. This would be very inefficient - let's say we have a value x. Once t goes beyond x + 3000, every future call to ping would have to iterate over x, even though we already know that x won't be included. We should get rid of x as soon as it is outdated.
 
-// To do this with a dynamic array, we could just remove values less than t - 3000 from the front. However, this is still inefficient because removing from the front of an array is 
+// To do this with a dynamic array, we could just remove values less than t - 3000 from the front. However, this is still inefficient because removing from the front of an array is
 // O
 // (
 // n
 // )
-// O(n), where 
+// O(n), where
 // n
-// n is the size of the array. If we use an efficient queue instead, then those removals become 
+// n is the size of the array. If we use an efficient queue instead, then those removals become
 // O
 // (
 // 1
@@ -69,49 +69,46 @@ function RecentCounter() {
 
 // or approach2
 
-
-var RecentCounter = function() {
-    this.queue = [];
+var RecentCounter = function () {
+  this.queue = [];
 };
 
-/** 
+/**
  * @param {number} t
  * @return {number}
  */
-RecentCounter.prototype.ping = function(t) {
-    while (this.queue.length && this.queue[0] < t - 3000) {
-        this.queue.shift();
-    }
-    
-    this.queue.push(t);
-    return this.queue.length;
+RecentCounter.prototype.ping = function (t) {
+  while (this.queue.length && this.queue[0] < t - 3000) {
+    this.queue.shift();
+  }
+
+  this.queue.push(t);
+  return this.queue.length;
 };
 
-/** 
+/**
  * Your RecentCounter object will be instantiated and called as such:
  * var obj = new RecentCounter()
  * var param_1 = obj.ping(t)
  */
 
-
-[1, 100, 3001, 4000]
-const RecentCounter = (t) =>{
+// [1, 100, 3001, 4000];
+const RecentCounter = (t) => {
   let queue = [];
   let result = [];
 
   // queue = [3001,4]
-  const ping = () =>{
-   
-    while( queue.length >0 && t - queue[0] > 3000){
+  const ping = () => {
+    while (queue.length > 0 && t - queue[0] > 3000) {
       queue.shift();
     }
     queue.push(t);
 
     return queue.length;
-  }
+  };
 
   return ping;
-}
+};
 
 // Given a stream of integers and a window size, calculate the moving average of all integers in the sliding window.
 
@@ -180,3 +177,24 @@ function MovingAverageFunction(size) {
     }
   };
 }
+
+//Monotonic
+// Example 1: 739. Daily Temperatures
+// Given an array of integers temperatures that represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the 
+// ith
+// ith
+// day to get a warmer temperature. If there is no future day that is warmer, have answer[i] = 0 instead.
+
+// [40,35,32,37,60]
+const dailyTemperatures = function (temperatures) {
+  let stack = [];
+  let result = new Array(temperatures.length).fill(0);
+  for (let i = 0; i < temperatures.length; i++) {
+    while (stack.length > 0 && temperatures[i] > temperatures[stack[stack.length - 1]]) {
+      const index = stack.pop();
+      result[index] = i - index;
+    }
+    stack.push(i);
+  }
+  return result;
+};
