@@ -35,7 +35,6 @@ queue.length; // 3
   }
 })();
 
-
 // Example: 933. Number of Recent Calls
 // Implement the RecentCounter class. It should support ping(int t), which records a call at time t, and then returns an integer representing the number of calls that have happened in the range [t - 3000, t]. Calls to ping will have increasing t.
 // t will be 1 then 100 then 3000 and then 4000
@@ -174,13 +173,13 @@ function MovingAverageFunction(size) {
         queueSum -= queue.shift();
       }
       return queueSum / queue.length;
-    }
+    },
   };
 }
 
 //Monotonic
 // Example 1: 739. Daily Temperatures
-// Given an array of integers temperatures that represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the 
+// Given an array of integers temperatures that represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the
 // ith
 // ith
 // day to get a warmer temperature. If there is no future day that is warmer, have answer[i] = 0 instead.
@@ -190,11 +189,50 @@ const dailyTemperatures = function (temperatures) {
   let stack = [];
   let result = new Array(temperatures.length).fill(0);
   for (let i = 0; i < temperatures.length; i++) {
-    while (stack.length > 0 && temperatures[i] > temperatures[stack[stack.length - 1]]) {
+    while (
+      stack.length > 0 &&
+      temperatures[i] > temperatures[stack[stack.length - 1]]
+    ) {
       const index = stack.pop();
       result[index] = i - index;
     }
     stack.push(i);
   }
+  return result;
+};
+
+/**
+ * @param {number[]} nums
+ * @param {number} limit
+ * @return {number}
+ */
+var longestSubarray = function (nums, limit) {
+  let increasingQueue = [];
+  let decreaingQueue = [];
+  let result = 0;
+  for (var i = 0; i < nums.length; i++) {
+    while (
+      increasingQueue.length > 0 &&
+      Math.abs(nums[i]) <
+        Math.abs(nums[increasingQueue[increasingQueue.length - 1]])
+    ) {
+      increasingQueue.pop();
+    }
+
+    while (
+      decreaingQueue.length > 0 &&
+      Math.abs(nums[i]) >
+        Math.abs(nums[decreaingQueue[decreaingQueue.length - 1]])
+    ) {
+      decreaingQueue.pop();
+    }
+
+    increasingQueue.push(i);
+    decreaingQueue.push(i);
+    console.log("***", i);
+  }
+  result =
+    decreaingQueue[decreaingQueue.length - 1] -
+    increasingQueue[increasingQueue - 1];
   return result;
 };
