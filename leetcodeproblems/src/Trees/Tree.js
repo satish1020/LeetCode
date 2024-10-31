@@ -91,3 +91,96 @@ class TreeNode {
     console.log(root.left.val);
     console.log(root.right.val);
 }());
+
+//max depth via post order
+var maxDepth = (root, ) =>{
+    if(!root){
+        return 0;
+    }
+    let left = Math.max(root.left);
+    let right = math.max(root.right);
+    return Math.max(left, right)+ 1;
+}
+
+// all three implementation.
+
+// max depth via post-order traversal
+var maxDepthPostOrder = (root) => {
+    if (!root) {
+        return 0;
+    }
+
+    const postOrder = (node) => {
+        if (!node) {
+            return 0;
+        }
+        let leftDepth = postOrder(node.left);
+        let rightDepth = postOrder(node.right);
+        return Math.max(leftDepth, rightDepth) + 1;
+    };
+
+    return postOrder(root);
+};
+
+// max depth via pre-order traversal
+var maxDepthPreOrder = (root) => {
+    if (!root) {
+        return 0;
+    }
+
+    const preOrder = (node) => {
+        if (!node) {
+            return 0;
+        }
+        let leftDepth = preOrder(node.left);
+        let rightDepth = preOrder(node.right);
+        return Math.max(leftDepth, rightDepth) + 1;
+    };
+
+    return preOrder(root);
+};
+
+// max depth via in-order traversal
+const maxDepthInOrder = (root) => {
+    if (!root) {
+        return 0;
+    }
+
+    const inOrder = (node) => {
+        if (!node) {
+            return 0;
+        }
+        let leftDepth = inOrder(node.left);
+        let rightDepth = inOrder(node.right);
+        return Math.max(leftDepth, rightDepth) + 1;
+    };
+
+    return inOrder(root);
+};
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var maxDepthIterativeApproach = function(root) {
+    if (!root) {
+        return 0;
+    }
+    
+    let stack = [[root, 1]];
+    let ans = 0;
+    
+    while (stack.length) {
+        let [node, depth] = stack.pop();
+        ans = Math.max(ans, depth);
+        
+        if (node.left) {
+            stack.push([node.left, depth + 1]);
+        }
+        if (node.right) {
+            stack.push([node.right, depth + 1]);
+        }
+    }
+    
+    return ans;
+};
