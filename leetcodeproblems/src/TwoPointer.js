@@ -118,3 +118,58 @@ const checkPalindrome = (str) => {
     }
   };
   
+  // Questions: You are given a sorted array of integers nums (potentially with duplicates) and an integer target. Your task is to write a function that implements binary search to find the index of the target in the array. If target is not in the array, return -1.
+
+  // Example 1: Input: nums = [-10, -3, 0, 5, 9, 12], target = 9 Output: 4
+  
+  // Example 2: Input: nums = [-10, -3, 0, 5, 9, 12], target = 2 Output: -1
+  
+  // Example 3: Input: nums = [-10, -3, 0, 0, 0, 5, 9, 12], target = 0 Output: 4
+  
+  // Input: nums = [-10, -3, 0, 5, 9, 12], target = 9 Output: 4 Check if the below answer is correct: function binarySearch(nums, target){ let left = 0; let right = nums.length -1; let result = -1;
+
+  function binarySearch(nums, target) {
+    let left = 0;
+    let right = nums.length - 1;
+  
+    while (left <= right) {
+      const mid = Math.floor((left + right) / 2) 
+      if (nums[mid] === target) {
+        return mid;
+      } else if (nums[mid] < target) {
+        left = mid + 1;
+      } else {
+        right = mid - 1;
+      }
+    }
+  
+    return -1;
+  }
+
+// Assume that an incremental bridge in an integer array nums is a pair (i, j) for which i < j and nums[i] < nums[j]. The length of such a bridge is j - i.
+// Given an integer array, return the maximum length of an incremental bridge in the array. If there is no incremental bridge, return 0.
+//  
+// Example 1:
+// Input: nums = [6,0,8,2,1,5]
+// Output: 4
+// Explanation: The longest incremental bridge is achieved at (i, j) = (1, 5): nums[1] = 0 and nums[5] = 5.
+
+// Example 2:
+// Input: nums = [9,8,1,0,1,9,4,0,4,2]
+// Output: 7
+// Explanation: The longest incremental bridge is achieved at (i, j) = (2, 9): nums[2] = 1 and nums[9] = 2.
+
+function maximumIncrementalBridge(nums) {
+  let maxBridgeLength = 0;
+  let n = nums.length;
+
+  for (let i = 0; i < n; i++) {
+      for (let j = i + 1; j < n; j++) {
+          if (nums[i] < nums[j]) {
+              maxBridgeLength = Math.max(maxBridgeLength, j - i);
+          }
+      }
+  }
+
+  return maxBridgeLength;
+}
