@@ -160,14 +160,17 @@ const checkPalindrome = (str) => {
 // Explanation: The longest incremental bridge is achieved at (i, j) = (2, 9): nums[2] = 1 and nums[9] = 2.
 
 function maximumIncrementalBridge(nums) {
-  let maxBridgeLength = 0;
   let n = nums.length;
+  let maxBridgeLength = 0;
+  let left = 0;
+  let right = n - 1;
 
-  for (let i = 0; i < n; i++) {
-      for (let j = i + 1; j < n; j++) {
-          if (nums[i] < nums[j]) {
-              maxBridgeLength = Math.max(maxBridgeLength, j - i);
-          }
+  while (left < right) {
+      if (nums[left] < nums[right]) {
+          maxBridgeLength = Math.max(maxBridgeLength, right - left);
+          left++;
+      } else {
+          right--;
       }
   }
 
