@@ -176,3 +176,123 @@ function maximumIncrementalBridge(nums) {
 
   return maxBridgeLength;
 }
+
+/**
+ * @param {*} value
+ * @return {string}
+ */
+
+function isCyclic(input) {
+  const seen = new Set();
+
+  function dfs(value) {
+    if (typeof value !== "object" || value === null) {
+      return false;
+    }
+
+    if (seen.has(value)) {
+      return true;
+    }
+
+    seen.add(value);
+
+    for (const val of Object.values(value)) {
+      if (dfs(val)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return dfs(input);
+}
+
+/**
+ * @param {*} value
+ * @return {string}
+ */
+const isCyclic = (value) => {
+  const seen = new Set();
+
+  const dfs = (value) => {
+    if (typeof value !== "object" || value === null) {
+      return false;
+    }
+
+    if (seen.has(value)) {
+      return true;
+    }
+    seen.add(value);
+
+    for (const val of Object.values(value)) {
+      if (dfs(val)) {
+        return true;
+      }
+    }
+    return false;
+  };
+  return dfs(value);
+};
+
+/**
+ * @param {*} value
+ * @return {string}
+ */
+export default function jsonStringify(value) {
+  if (isCyclic(value)) {
+    throw new TypeError("Converting circular structure to JSON");
+  }
+  if (typeof value === "bigint") {
+    throw new TypeError("Do not know how to serialize a BigInt");
+  }
+  if (value === null) {
+    return "null";
+  }
+  const regex = /"/g;
+
+  switch (typeof value) {
+    case "string":
+      return `"${value.replace(regex, '\\"')}"`;
+    case "function":
+    case "symbol":
+    case "undefined":
+      return undefined;
+    case "number":
+      if (Number.isNaN(value) || !Number.isFinite(value)) {
+        return "null";
+      }
+      return `${value}`;
+    case "object":
+      if (typeof value.toJSON === "function") {
+        return jsonStringify(value.toJSON());
+      }
+      if (Array.isArray(value)) {
+        const arrayValues = value.map((item) => jsonStringify(item));
+        return `[${arrayValues.join(",")}]`;
+      }
+
+      const objectEntries = Object.entries(value)
+        .map(([key, val]) => {
+          const shouldIgnoreEntry =
+            typeof key === "symbol" ||
+            typeof val === "symbol" ||
+            typeof val === "function" ||
+            typeof val === "undefined";
+          if (shouldIgnoreEntry) {
+            return;
+          }
+          return `"${key}":${jsonStringify(val)}`;
+        })
+        .filter((item) => item !== undefined);
+      return `{${objectEntries.join(",")}}`;
+    default:
+      return undefined;
+  }
+}
+
+
+
+if (isNaN(value) || !isFinite(value)) {
+  return "null";
+} else {
+  return `${value}`;
+}
