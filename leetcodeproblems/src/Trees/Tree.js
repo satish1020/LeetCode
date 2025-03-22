@@ -20,6 +20,7 @@ class TreeNode {
   }
 }
 
+
 function TreeNode(val){
     this.val = val;
     this.left = null;
@@ -74,6 +75,7 @@ class TreeNode {
     }
 }
 
+
 (function main() {
     /*
     The following code builds a tree that looks like:
@@ -92,15 +94,32 @@ class TreeNode {
     console.log(root.right.val);
 }());
 
+// function declaration of node and to build a tree;
+function TreeNode(val){
+this.val = val;
+this.left = null;
+this.right = null;
+}
+
+function buildTree(){
+let rootNode = new TreeNode(0);
+let leftNode = new TreeNode(1);
+let rightNode = new TreeNode(2);
+rootNode.left = leftNode;
+
+rootNode.right = rightNode;
+}
+
 //max depth via post order
-var maxDepth = (root, ) =>{
-    if(!root){
+var maxDepth = (root) => {
+    if (!root) {
         return 0;
     }
-    let left = Math.max(root.left);
-    let right = math.max(root.right);
-    return Math.max(left, right)+ 1;
+    let leftDepth = maxDepth(root.left);
+    let rightDepth = maxDepth(root.right);
+    return Math.max(leftDepth, rightDepth) + 1;
 }
+
 
 // all three implementation.
 
@@ -183,4 +202,36 @@ var maxDepthIterativeApproach = function(root) {
     }
     
     return ans;
+};
+
+
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {boolean}
+ */
+var hasPathSum = function (root, targetSum) {
+    const dfs = (node, curr) => {
+        if (!node) {
+            return false;
+        }
+
+        if (!node.left && !node.right) {
+            return curr + node.val === targetSum;
+        }
+        curr+= node.val;
+        let left = dfs(node.left, curr);
+        let right = dfs(node.right, curr);
+        return left || right;
+    }
+    return dfs(root, 0)
 };
