@@ -230,8 +230,10 @@ var hasPathSum = function (root, targetSum) {
             return curr + node.val === targetSum;
         }
         curr+= node.val;
+        // if there exists a pathsum in left subtree or right subtree which would be boolean.
         let left = dfs(node.left, curr); 
         let right = dfs(node.right, curr);
+        // if either left or right subtree has valid path then return true;
         return left || right;
     }
     return dfs(root, 0)
