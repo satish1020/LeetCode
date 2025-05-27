@@ -141,6 +141,7 @@ var maxDepthPostOrder = (root) => {
     return postOrder(root);
 };
 
+
 // max depth via pre-order traversal
 var maxDepthPreOrder = (root) => {
     if (!root) {
@@ -205,7 +206,6 @@ var maxDepthIterativeApproach = function(root) {
 };
 
 
-
 /**
  * Definition for a binary tree node.
  * function TreeNode(val, left, right) {
@@ -221,17 +221,56 @@ var maxDepthIterativeApproach = function(root) {
  */
 var hasPathSum = function (root, targetSum) {
     const dfs = (node, curr) => {
+        // base case 
         if (!node) {
             return false;
         }
-
+ // leaf node 
         if (!node.left && !node.right) {
             return curr + node.val === targetSum;
         }
         curr+= node.val;
-        let left = dfs(node.left, curr);
+        let left = dfs(node.left, curr); 
         let right = dfs(node.right, curr);
         return left || right;
     }
     return dfs(root, 0)
+};
+
+/**
+ * Alternative Approach
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var goodNodes = function(root){
+    const dfs = (node, maxSoFar)=>{
+        let good = node.val> maxSoFar? 1: 0;
+        let maxSoFar = Math.max(maxSofar, node.val);
+
+        return good + dfs(node.left, maxSofar) + dfs(node.right, maxSoFar);
+    }
+    return dfs(root, -Infinity);
+}
+
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+var goodNodes = function(root) {
+    let dfs = (node, maxSoFar) => {
+        if (!node) {
+            return 0;
+        }
+        
+        let nmberOfGoodNodesInLeftSubTree = dfs(node.left, Math.max(maxSoFar, node.val));
+        let nmberOfGoodNodesInRightSubTree = dfs(node.right, Math.max(maxSoFar, node.val));
+        let ans = nmberOfGoodNodesInLeftSubTree + nmberOfGoodNodesInRightSubTree;
+        if (node.val >= maxSoFar) {
+            ans++;
+        }
+        
+        return ans;
+    }
+    return dfs(root, -Infinity);
 };
