@@ -288,7 +288,33 @@ export default function jsonStringify(value) {
       return undefined;
   }
 }
+/**
+ * Given a sorted array, return a new array of the squares of each number, also sorted.
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+function sortedSquares(nums) {
+  const n = nums.length;
+  const result = new Array(n);
+  let left = 0, right = n - 1, pos = n - 1;
 
+  while (left <= right) {
+    const leftSq = nums[left] * nums[left];
+    const rightSq = nums[right] * nums[right];
+    if (leftSq > rightSq) {
+      result[pos--] = leftSq;
+      left++;
+    } else {
+      result[pos--] = rightSq;
+      right--;
+    }
+  }
+  return result;
+}
+
+// Example usage:
+// const nums = [-4,-1,0,3,10];
+// console.log(sortedSquares(nums)); // [0,1,9,16,100]
 
 
 if (isNaN(value) || !isFinite(value)) {
