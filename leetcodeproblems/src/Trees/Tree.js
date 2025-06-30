@@ -1,15 +1,15 @@
-Binary trees
-Report Issue
-This entire chapter will make heavy use of recursion.If you aren't comfortable with recursion, please review the "Introduction to recursion" article in the first chapter before continuing.
+// Binary trees
+// Report Issue
+// This entire chapter will make heavy use of recursion.If you aren't comfortable with recursion, please review the "Introduction to recursion" article in the first chapter before continuing.
 
-Nodes and graphs
-In this chapter, we will be learning about trees and graphs, which is probably the most common type of interview question(hash maps aren't really a "type" of question, and "array" or "string" is too broad). Trees and graphs are abstract data structures that show up everywhere in both the physical world and the software world. This is the longest chapter of the course, but for good reason. A huge amount of interview problems give trees or graphs as the input, and the entire problem is focused on them. As such, it is crucial that anyone going into a coding interview has a strong understanding of them.
+// Nodes and graphs
+// In this chapter, we will be learning about trees and graphs, which is probably the most common type of interview question(hash maps aren't really a "type" of question, and "array" or "string" is too broad). Trees and graphs are abstract data structures that show up everywhere in both the physical world and the software world. This is the longest chapter of the course, but for good reason. A huge amount of interview problems give trees or graphs as the input, and the entire problem is focused on them. As such, it is crucial that anyone going into a coding interview has a strong understanding of them.
 
-Let's start by revisiting what a node is. We looked at nodes in the linked lists chapter - recall that a node is an abstract data type with two things. First, a node stores data. This data can be whatever you want - an integer, a boolean, a hash map, your own custom objects, or all of the above. Second, a node stores pointers to other nodes.
+// Let's start by revisiting what a node is. We looked at nodes in the linked lists chapter - recall that a node is an abstract data type with two things. First, a node stores data. This data can be whatever you want - an integer, a boolean, a hash map, your own custom objects, or all of the above. Second, a node stores pointers to other nodes.
 
-A graph is any collection of nodes and their pointers to other nodes.In fact, linked lists and trees are both types of graphs.As a topic, graphs are extremely broad.There is an entire field of study dedicated to graphs called graph theory.
+// A graph is any collection of nodes and their pointers to other nodes.In fact, linked lists and trees are both types of graphs.As a topic, graphs are extremely broad.There is an entire field of study dedicated to graphs called graph theory.
 
-Even though a tree is a type of graph, trees and graphs are considered different topics when it comes to algorithm problems.Because graphs are the more advanced / difficult topic, we will start by looking at trees.
+// Even though a tree is a type of graph, trees and graphs are considered different topics when it comes to algorithm problems.Because graphs are the more advanced / difficult topic, we will start by looking at trees.
 
 // Tree Node Class
 class TreeNode {
@@ -443,23 +443,23 @@ var goodNodes = function (root) {
 
 // Example 2: 112. Path Sum
 // Given the root of a binary tree and an integer targetSum, return true if there exists a path from the root to a leaf such that the sum of the nodes on the path is equal to targetSum, and return false otherwise.
-const hasPathSum = (root, targetSum) =>{
-    const dfs  = (node, curr) =>{
-        if(!node){
+const hasPathSum = (root, targetSum) => {
+    const dfs = (node, curr) => {
+        if (!node) {
             return false;
         }
-        
+
         curr += node.val;
 
-        if(!root.left && !root.right){
+        if (!root.left && !root.right) {
             return curr === targetSum;
         }
 
         let leftNodes = dfs(node.left);
         let rightNodes = dfs(node.right);
         return leftNodes || rightNodes;
-    }   
-    return  dfs(root, 0);
+    }
+    return dfs(root, 0);
 }
 
 // Example 4: 100. Same Tree
@@ -468,7 +468,7 @@ const hasPathSum = (root, targetSum) =>{
 
 // recurssively call same funciton
 const dfsSameTres = (p, q) => {
-     // base case both nodes are null
+    // base case both nodes are null
     if (p === null && q === null) return true;
     // if either of them are null return false
     if (p === null || q === null) return false;
@@ -492,7 +492,7 @@ const dfsSameTresInnerFunction = (p, q) => {
     return isSameTree(p, q);
 };
 
-var isSameTree = function(p, q) {
+var isSameTree = function (p, q) {
     let stack = [[p, q]];
     while (stack.length) {
         let [p, q] = stack.pop();
@@ -563,7 +563,7 @@ var isSameTree = function(p, q) {
 // The first node where both left and right are non-null is the LCA.
 // If only one is found, it keeps returning that node up the call stack.
 
-var lowestCommonAncestor = function(root, p, q) {
+var lowestCommonAncestor = function (root, p, q) {
     // Base case: if root is null, return null (end of branch)
     if (!root) {
         return null;
@@ -597,40 +597,40 @@ var lowestCommonAncestor = function(root, p, q) {
 // resources https://replit.com/@ZhangMYihua/Matrix-traversal-DFS#index.js
 
 const testMatrix = [
-  [1, 2, 3, 4, 5],
-  [6, 7, 8, 9, 10],
-  [11, 12, 13, 14, 15],
-  [16, 17, 18, 19, 20]
+    [1, 2, 3, 4, 5],
+    [6, 7, 8, 9, 10],
+    [11, 12, 13, 14, 15],
+    [16, 17, 18, 19, 20]
 ];
 
 const directions = [
-  [-1, 0], //up
-  [0, 1], //right
-  [1, 0], //down
-  [0, -1] //left
+    [-1, 0], //up
+    [0, 1], //right
+    [1, 0], //down
+    [0, -1] //left
 ]
 
-const traversalDFS = function(matrix) {
-  const seen = 
-    new Array(matrix.length).fill(0).map(() => new Array(matrix[0].length).fill(false));
+const traversalDFS = function (matrix) {
+    const seen =
+        new Array(matrix.length).fill(0).map(() => new Array(matrix[0].length).fill(false));
 
-  const values = [];
+    const values = [];
 
-  dfs(matrix, 0, 0, seen, values);
+    dfs(matrix, 0, 0, seen, values);
 
-  return values;
+    return values;
 }
 
-const dfs = function(matrix, row, col, seen, values) {
-  if(row < 0 || col < 0 || row >= matrix.length || col >= matrix[0].length || seen[row][col]) return;
-  
-  seen[row][col] = true;
-  values.push(matrix[row][col]);
+const dfs = function (matrix, row, col, seen, values) {
+    if (row < 0 || col < 0 || row >= matrix.length || col >= matrix[0].length || seen[row][col]) return;
 
-  for(let i = 0; i < directions.length; i++) {
-    const currentDir = directions[i];
-    dfs(matrix, row + currentDir[0], col + currentDir[1], seen, values);
-  }
+    seen[row][col] = true;
+    values.push(matrix[row][col]);
+
+    for (let i = 0; i < directions.length; i++) {
+        const currentDir = directions[i];
+        dfs(matrix, row + currentDir[0], col + currentDir[1], seen, values);
+    }
 }
 
 console.log(traversalDFS(testMatrix));
@@ -703,3 +703,128 @@ const dfsTraversal = (matrix, row, col, seen, values) => {
         dfsTraversal(matrix, nextRow, nextCol, seen, values);
     }
 };
+
+
+
+const testMatrixBFS = [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12],
+    [13, 14, 15, 16]
+];
+
+
+const traversalBFS = function (matrix) {
+    const seen =
+        new Array(matrix.length).fill(0).map(() => new Array(matrix[0].length).fill(false));
+
+    const values = [];
+
+    const queue = [[0, 0]];
+
+    while (queue.length) {
+        const currentPos = queue.shift();
+        const row = currentPos[0];
+        const col = currentPos[1];
+
+        if (row < 0 || row >= matrix.length || col < 0 || col >= matrix[0].length || seen[row][col]) {
+            continue;
+        }
+
+        seen[row][col] = true;
+        values.push(matrix[row][col]);
+
+        for (let i = 0; i < directions.length; i++) {
+            const currentDir = directions[i];
+            queue.push([row + currentDir[0], col + currentDir[1]]);
+        }
+    }
+
+    return values;
+}
+
+
+console.log(traversalBFS(testMatrixBFS));
+
+
+// my solution number of islands dfs
+const testMatrixIslands = [
+  [0, 1, 0, 1, 0],
+  [1, 0, 1, 0, 1],
+  [0, 1, 1, 1, 0],
+  [1, 0, 1, 0, 1]
+];
+
+
+const dfsTraveral = function(grid, currentRow, currentCol) {
+  if(currentRow < 0 || currentRow >= grid.length || currentCol < 0 || currentCol >= grid[0].length) return;
+
+  if(grid[currentRow][currentCol] === 1) {
+    grid[currentRow][currentCol] = 0;
+
+    for(let i = 0; i < directions.length; i++) {
+      const currentDir = directions[i];
+      const row = currentDir[0];
+      const col = currentDir[1];
+      dfsTraveral(grid, currentRow + row, currentCol + col);
+    }
+  }
+}
+
+// https://replit.com/@ZhangMYihua/Number-of-Islands-DFS#index.js
+const numberOfIslandsDFS = function(grid) {
+  if(!grid.length) return 0;
+  
+  let islandCount = 0;
+  
+  for(let row = 0; row < grid.length; row++) {
+    for(let col = 0; col < grid[0].length; col++) {
+      if(grid[row][col] === 1) {
+        islandCount++;
+        dfsTraveral(grid, row, col);
+      }
+    }
+  }
+  
+  return islandCount;
+};
+
+console.log(numberOfIslandsDFS(testMatrixIslands));
+
+// https://replit.com/@ZhangMYihua/Number-of-Islands-BFS#index.js
+const numberOfIslandsbfs = function(matrix) {
+  if(matrix.length === 0) return 0;
+  let islandCount = 0;
+
+  for(let row = 0; row < matrix.length; row++) {
+    for(let col = 0; col < matrix[0].length; col++) {
+      if(matrix[row][col] === 1) {
+        islandCount++;
+        matrix[row][col] = 0;
+        const queue = [];
+        queue.push([row, col]);
+
+        while(queue.length) {
+          const currentPos = queue.shift();
+          const currentRow = currentPos[0];
+          const currentCol = currentPos[1];
+
+          for(let i = 0; i < directions.length; i++) {
+            const currentDir = directions[i];
+            const nextRow = currentRow + currentDir[0];
+            const nextCol = currentCol + currentDir[1];
+
+            if(nextRow < 0 || nextRow >= matrix.length || nextCol < 0 || nextCol >= matrix[0].length) continue;
+
+            if(matrix[nextRow][nextCol] === 1) {
+              queue.push([nextRow, nextCol]);
+              matrix[nextRow][nextCol] = 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return islandCount;
+}
